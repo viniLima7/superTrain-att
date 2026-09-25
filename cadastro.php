@@ -1,3 +1,25 @@
+<?php
+  require "config.php";
+
+  $login = '';
+  $erros = [];
+  $sucesso = '';
+
+  if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    $email = trim($_POST['login'] ?? '');
+    $pais = $_POST['paisUsuario'] ?? '';
+    $senha = $_POST['senhaUsuario'] ?? '';
+    $confirmacaoSenha = $_POST['confirmacaoSenhaUsuario'];
+
+    if($email === '') {
+      $erros[] = 'Informe o login.';
+    }elseif (mb_strlen($login) > 150){
+      $erros[] = 'O login deve ter no máximo 150 caracteres.';
+    }
+
+  }
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -31,11 +53,27 @@
       <div class="card cadastro-card">
         <h1 class="card-title">Criar Conta</h1>
 
-        <form>
+        <?php if (count($erros) > 0): ?>
+          <div class="aviso aviso-erro">
+            <ul>
+              <?php foreach ($erros as $erro): ?>
+                <li><?= htmlspecialchars($erro) ?></li>
+              <?php endforeach; ?>
+            </ul>
+          </div>
+          <?php endif; ?>
+
+          <?php if ($sucesso !== ''): ?>
+            <p class="aviso"><?= htmlspecialchars($sucesso) ?></p>
+          <?php endif; ?>
+
+          <!-- FORMS -->
+        <form method="post" autocomplete="off">
+
           <!-- E-MAIL -->
           <div class="form-group mb-3">
             <label for="emailUsuario" class="form-label">E-mail Corporativo</label>
-            <input type="email" class="form-control" id="emailUsuario" name="emailUsuario" placeholder="exemplo@supertrain.com" required autocomplete="email" />
+            <input type="email" class="form-control" id="emailUsuario" name="emailUsuario" placeholder="exemplo@supertrain.com" value="<?= htmlspecialchars($login) ?>"/>
           </div>
 
           <!-- SELECT PAÍS -->
@@ -69,9 +107,10 @@
 
           <div class="auth-links">
             <p>Já possui uma conta ativa?</p>
-            <a href="login.html" class="auth-link">Voltar para o Login</a>
+            <a href="login.php" class="auth-link">Voltar para o Login</a>
           </div>
         </form>
+
       </div>
     </div>
   </main>
