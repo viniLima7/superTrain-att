@@ -1,0 +1,62 @@
+/* ==========================================================================
+   SUPERTRAIN - TELA DE ROTAS
+   Minimalist & Modern Route Management Form
+   ========================================================================== */
+
+@import "global.css";
+
+.rotas-wrapper {
+    max-width: 600px;
+    margin: 1.5rem auto 4rem auto;
+    padding: 0 1rem;
+}
+
+.texto-indicativo {
+    font-family: var(--font-heading);
+    font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+    color: var(--cor-texto-primario);
+    text-align: center;
+    margin-bottom: 1.75rem;
+    letter-spacing: 0.03em;
+}
+
+.rotas-card {
+    background: var(--cor-fundo-card);
+    backdrop-filter: blur(24px) saturate(190%);
+    -webkit-backdrop-filter: blur(24px) saturate(190%);
+    border: 1px solid var(--borda-vidro);
+    border-radius: var(--raio-lg);
+    box-shadow: var(--sombra-card), 0 0 40px rgba(15, 23, 42, 0.6);
+    padding: 2.5rem 2.25rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.rotas-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #3b82f6, #60a5fa, #1d4ed8);
+}
+
+.card-title {
+    font-family: var(--font-heading);
+    font-size: 1.6rem;
+    color: #ffffff;
+    letter-spacing: 0.04em;
+    margin-bottom: 1.75rem;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 1.35rem;
+}
+
+.helper-text {
+    font-size: 0.78rem;
+    color: var(--cor-texto-sutil);
+    margin-top: 0.35rem;
+}

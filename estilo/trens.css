@@ -1,0 +1,127 @@
+/* ==========================================================================
+   SUPERTRAIN - TELA DE TRENS
+   Minimalist & Interactive Fleet Monitoring
+   ========================================================================== */
+
+@import "global.css";
+
+.trens-container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding-bottom: 4rem;
+}
+
+.trens-card {
+    padding: 1.75rem 2rem;
+}
+
+.card-header-custom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    gap: 0.25rem;
+}
+
+.card-header-custom .card-title {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    letter-spacing: 0.04em;
+    color: #ffffff;
+    margin: 0;
+}
+
+.card-header-custom .card-subtitle {
+    font-size: 0.82rem;
+    color: var(--cor-texto-mutado);
+    margin: 0;
+}
+
+.train-row {
+    cursor: pointer;
+    transition: all var(--transicao-rapida);
+}
+
+.train-row:hover {
+    background-color: rgba(59, 130, 246, 0.08) !important;
+}
+
+.train-row:hover th, .train-row:hover td {
+    color: #ffffff;
+}
+
+/* Painel de detalhes do trem */
+.detail-box {
+    background: rgba(10, 16, 30, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--raio-md);
+    padding: 1.25rem;
+    margin: 0.5rem 0.25rem 0.75rem 0.25rem;
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+.detail-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--cor-texto-mutado);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.map-container {
+    border-radius: var(--raio-sm);
+    overflow: hidden;
+    border: 1px solid var(--borda-vidro);
+    height: 160px;
+    background: #000;
+}
+
+.speed-metric-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--raio-sm);
+    padding: 1rem;
+    text-align: center;
+}
+
+.speed-number {
+    font-family: var(--font-heading);
+    font-size: 2.2rem;
+    color: #ffffff;
+    line-height: 1;
+    margin: 0.25rem 0;
+    text-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+}
+
+.speed-unit {
+    font-size: 0.8rem;
+    color: var(--cor-azul-light);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+.train-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+}
+
+.collapse-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.78rem;
+    color: var(--cor-azul-light);
+}
+
+@media (max-width: 768px) {
+    .trens-card {
+        padding: 1.25rem 1rem;
+    }
+}

@@ -1,0 +1,306 @@
+/* ==========================================================================
+   SUPERTRAIN - CENTRAL DE RELATÓRIOS & TELEMETRIA
+   Dark Glassmorphism Analytics & Operational Reports
+   ========================================================================== */
+
+@import "global.css";
+
+.relatorios-container {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding-bottom: 4rem;
+}
+
+/* --- HEADER / HERO --- */
+.relatorios-header-card {
+    padding: 2rem 2.25rem;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 1.75rem;
+}
+
+.relatorios-header-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #3b82f6, #60a5fa, #1d4ed8);
+}
+
+.page-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+    color: #ffffff;
+    margin-bottom: 0.35rem;
+    letter-spacing: 0.03em;
+}
+
+.page-subtitle {
+    font-size: 0.85rem;
+    color: var(--cor-texto-mutado);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+/* --- PAINEL DE FILTROS & GERADOR --- */
+.filter-card {
+    padding: 1.75rem 2rem;
+    margin-bottom: 1.75rem;
+}
+
+.filter-title {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    color: #ffffff;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    letter-spacing: 0.02em;
+}
+
+.filter-title i {
+    color: var(--cor-azul-light);
+}
+
+.export-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.btn-export {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--borda-vidro);
+    color: var(--cor-texto-primario);
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.55rem 1rem;
+    border-radius: var(--raio-md);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    transition: all var(--transicao-rapida);
+}
+
+.btn-export:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-1px);
+}
+
+.btn-export-pdf:hover {
+    background: rgba(244, 63, 94, 0.15);
+    border-color: #f43f5e;
+    color: #fda4af;
+}
+
+.btn-export-excel:hover {
+    background: rgba(16, 185, 129, 0.15);
+    border-color: #10b981;
+    color: #6ee7b7;
+}
+
+/* --- CARDS DE KPIS / MÉTRICAS OPERACIONAIS --- */
+.kpi-card {
+    background: var(--cor-fundo-card);
+    border: 1px solid var(--borda-vidro);
+    border-radius: var(--raio-lg);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    transition: transform var(--transicao-suave), border-color var(--transicao-media), box-shadow var(--transicao-media);
+}
+
+.kpi-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--borda-vidro-destaque);
+    box-shadow: var(--sombra-card), var(--sombra-glow);
+}
+
+.kpi-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+}
+
+.kpi-icon-frame {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--raio-md);
+    background: rgba(59, 130, 246, 0.12);
+    border: 1px solid rgba(59, 130, 246, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--cor-azul-light);
+    font-size: 1.25rem;
+}
+
+.kpi-trend {
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.2rem 0.55rem;
+    border-radius: var(--raio-full);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.kpi-trend.positive {
+    background: var(--status-ativo-bg);
+    color: var(--status-ativo);
+    border: 1px solid var(--status-ativo-border);
+}
+
+.kpi-trend.neutral {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--cor-texto-secundario);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.kpi-value {
+    font-family: var(--font-heading);
+    font-size: 1.85rem;
+    color: #ffffff;
+    line-height: 1.2;
+    margin-bottom: 0.2rem;
+}
+
+.kpi-label {
+    font-size: 0.82rem;
+    color: var(--cor-texto-mutado);
+    margin: 0;
+}
+
+/* --- SEÇÃO DE DISTRIBUIÇÃO VISUAL & GRÁFICO --- */
+.visual-section-card {
+    padding: 1.75rem 2rem;
+    margin-bottom: 1.75rem;
+}
+
+.fluxo-bar-item {
+    margin-bottom: 1.15rem;
+}
+
+.fluxo-bar-item:last-child {
+    margin-bottom: 0;
+}
+
+.fluxo-bar-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: var(--cor-texto-secundario);
+    margin-bottom: 0.4rem;
+}
+
+.fluxo-bar-label span:last-child {
+    font-family: var(--font-mono);
+    color: #ffffff;
+}
+
+/* --- TABELA DE RELATÓRIOS --- */
+.table-card {
+    padding: 1.75rem 2rem;
+    margin-bottom: 2rem;
+}
+
+.table-header-custom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.table-title {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    color: #ffffff;
+    letter-spacing: 0.03em;
+    margin: 0;
+}
+
+.report-id {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--cor-azul-light);
+}
+
+.btn-action-table {
+    padding: 0.35rem 0.65rem;
+    font-size: 0.8rem;
+    border-radius: var(--raio-sm);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--borda-vidro);
+    color: var(--cor-texto-secundario);
+    transition: all var(--transicao-rapida);
+}
+
+.btn-action-table:hover {
+    background: rgba(59, 130, 246, 0.2);
+    border-color: var(--cor-azul-light);
+    color: #ffffff;
+}
+
+/* --- MODAL DARK GLASSMORPHISM --- */
+.modal-content.card-bg-blur {
+    background: rgba(10, 16, 30, 0.95) !important;
+    border: 1px solid var(--borda-vidro-destaque) !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7) !important;
+}
+
+.modal-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.modal-title {
+    font-family: var(--font-heading);
+    color: #ffffff;
+    font-size: 1.25rem;
+}
+
+.modal-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.report-preview-box {
+    background: rgba(0, 0, 0, 0.35);
+    border-radius: var(--raio-md);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 1.25rem;
+}
+
+/* --- RESPONSIVIDADE --- */
+@media (max-width: 768px) {
+    .relatorios-header-card, .filter-card, .table-card, .visual-section-card {
+        padding: 1.25rem 1rem;
+    }
+
+    .export-toolbar {
+        justify-content: stretch;
+    }
+
+    .export-toolbar .btn, .export-toolbar .btn-export {
+        width: 100%;
+        justify-content: center;
+    }
+}
