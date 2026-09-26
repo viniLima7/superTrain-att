@@ -1,9 +1,12 @@
 <?php
   require "config.php";
 
-  $login = '';
+  $email = '';
   $erros = [];
   $sucesso = '';
+  $nomePadrao = 'vazio';
+  $paisPadrao = '1';
+  $statusPadrao = 'ativo';
 
   if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $email = trim($_POST['login'] ?? '');
@@ -12,11 +15,55 @@
     $confirmacaoSenha = $_POST['confirmacaoSenhaUsuario'];
 
     if($email === '') {
-      $erros[] = 'Informe o login.';
-    }elseif (mb_strlen($login) > 150){
+      $erros[] = 'Informe o email.';
+    }elseif (mb_strlen($email) > 150){
       $erros[] = 'O login deve ter no máximo 150 caracteres.';
     }
 
+    if($pais === '') {
+      $erros[] = 'Informe o seu país.';
+    }
+
+    if($senha === ''){
+      $erros[] = 'Informe sua senha.';
+    }elseif (mb_strlen($senha) < 8) {
+      $erros[] = 'A senha deve conter no mínimo 8 caracteres.';
+    }
+
+    
+    if($confirmacaoSenha === ''){
+      $erros[] = 'Confirme sua senha.';
+    }elseif (mb_strlen($senha) < 8) {
+      $erros[] = 'A senha deve conter no mínimo 8 caracteres.';
+    }elseif ($senha !== $confirmacaoSenha) {
+      $erros[] = 'As senhas não coincidem.';
+    }
+
+    if(count($erros) === 0) {
+      $stmt = $conexao->prepare('SELECT id FROM usuarios WHERE email = ? LIMIT 1');
+      $stmt->bind_param('s', $email);
+      $stmt->execute();
+      $existe = $stmt->get_result()->fetch_assoc();
+      $stmt -> close();
+
+      if($existe){
+        $erros[] = 'Este email já possui cadastro.';
+      } else {
+        $hash = password_hash($senha, PASSWORD_DEFAULT);
+
+        $stmt = $conexao->prepare('INSERT INTO usuarios (`email`, `nome_usuario`, `senha_hash`, `pais_id`, `status_conta`) VALUES (?,?,?,?,?)');
+        $stmt-> bind_param('sssis', $email, $nomePadrao, $hash, $paisPadrao, $statusPadrao);
+
+        if($stmt->execute()){
+          $sucesso = 'Usúario cadastrado com sucesso!';
+          $email = '';
+        } else {
+          $erros[] = 'Não foi possível cadastrar o usuário.';
+        }
+
+        $stmt -> close();
+      }
+    }
   }
 ?>
 
@@ -73,7 +120,7 @@
           <!-- E-MAIL -->
           <div class="form-group mb-3">
             <label for="emailUsuario" class="form-label">E-mail Corporativo</label>
-            <input type="email" class="form-control" id="emailUsuario" name="emailUsuario" placeholder="exemplo@supertrain.com" value="<?= htmlspecialchars($login) ?>"/>
+            <input type="email" class="form-control" id="emailUsuario" maxlength="150" name="emailUsuario" placeholder="exemplo@supertrain.com" require value="<?= htmlspecialchars($email) ?>"/>
           </div>
 
           <!-- SELECT PAÍS -->
@@ -92,13 +139,13 @@
           <!-- SENHA USUÁRIO -->
           <div class="form-group mb-3">
             <label for="senhaUsuario" class="form-label">Senha</label>
-            <input type="password" class="form-control" id="senhaUsuario" name="senhaUsuario" placeholder="••••••••••••" required autocomplete="new-password" />
+            <input type="password" class="form-control" id="senhaUsuario" name="senhaUsuario" placeholder="••••••••••••" required minlength="8" />
           </div>
 
           <!-- CONFIRMAÇÃO SENHA -->
           <div class="form-group mb-4">
             <label for="confirmacaoSenhaUsuario" class="form-label">Confirme sua senha</label>
-            <input type="password" class="form-control" id="confirmacaoSenhaUsuario" name="confirmacaoSenhaUsuario" placeholder="••••••••••••" required autocomplete="new-password" />
+            <input type="password" class="form-control" id="confirmacaoSenhaUsuario" name="confirmacaoSenhaUsuario" placeholder="••••••••••••" minlength="8" />
           </div>
 
           <button type="submit" class="btn w-100 btn-cadastro">
