@@ -1,3 +1,29 @@
+<?php 
+ if (session_start() !== PHP_SESSION_ACTIVE) {
+    session_start();
+ }
+
+ require 'config.php';
+
+  if (isset($_SESSION['usuario_id'])) {
+    header('Location: dashboard.php');
+    exit;
+  }
+
+  $erro = '';
+
+  if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = trim($_POST['emailUsuario']);
+    $senha = $_POST['senha'];
+
+    if($email === '' || $senha === '') {
+      $erro = 'Preencha o login e a senha.';
+    } else {
+      $stmt = $conexao->prepare('SELECT id, email, ');
+    }
+  }
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -37,15 +63,20 @@
 
       <div class="card login-card">
         <h2 class="login-title">Acessar Conta</h2>
-        <form>
+
+        <?php if ($erro !== ''): ?>
+          <p class="aviso avios-erro"><?= htmlspecialchars($erro) ?></p>
+        <?php endif; ?>
+
+        <form method="post" autocomplete="off">
           <div class="form-group mb-3">
-            <label for="usuario" class="form-label">Usuário</label>
-            <input type="text" id="usuario" name="nomeUsuario" class="form-control" placeholder="Seu nome de usuário" required autocomplete="username">
+            <label for="usuario" class="form-label">E-mail</label>
+            <input type="text" id="emailUsuario" name="emailUsuario" class="form-control" placeholder="Seu E-mail de usuário" maxlength="150" required>
           </div>
 
           <div class="form-group mb-4">
             <label for="senha" class="form-label">Senha</label>
-            <input type="password" id="senha" name="senha" class="form-control" placeholder="Sua senha secreta" required autocomplete="current-password">
+            <input type="password" id="senha" name="senha" class="form-control" placeholder="Sua senha secreta" required autocomplete="current-password" required>
           </div>
 
           <button type="submit" class="btn w-100 btn-login">
@@ -64,8 +95,6 @@
       </div>
     </div>
   </main>
-
-  <footer></footer>
 </body>
 
 </html>

@@ -9,7 +9,7 @@
   $statusPadrao = 'ativo';
 
   if($_SERVER['REQUEST_METHOD'] === 'POST'){
-    $email = trim($_POST['login'] ?? '');
+    $email = trim($_POST['emailUsuario'] ?? '');
     $pais = $_POST['paisUsuario'] ?? '';
     $senha = $_POST['senhaUsuario'] ?? '';
     $confirmacaoSenha = $_POST['confirmacaoSenhaUsuario'];
