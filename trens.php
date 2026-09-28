@@ -16,7 +16,7 @@
     <!-- NAV -->
     <nav class="navbar navbar-expand-lg bg-blur">
       <div class="container-fluid">
-        <a class="navbar-brand" href="dashboard.html">
+        <a class="navbar-brand" href="dashboard.php">
           <img src="imagens/logo.png" alt="SuperTrain Logo" width="36" height="28" />
           SuperTrain
         </a>
@@ -28,32 +28,32 @@
         <div class="collapse navbar-collapse" id="navbarSuperTrain">
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link" href="dashboard.html">
+              <a class="nav-link" href="dashboard.php">
                 <i class="bi bi-grid-fill"></i> Dashboard
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="trens.html">
+              <a class="nav-link active" aria-current="page" href="trens.php">
                 <i class="bi bi-train-front"></i> Trens
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="rotas.html">
+              <a class="nav-link" href="rotas.php">
                 <i class="bi bi-signpost-split"></i> Rotas
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="sensores.html">
+              <a class="nav-link" href="sensores.php">
                 <i class="bi bi-broadcast-pin"></i> Sensores
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="relatorios.html">
+              <a class="nav-link" href="relatorios.php">
                 <i class="bi bi-file-earmark-bar-graph"></i> Relatórios
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="perfil.html">
+              <a class="nav-link" href="perfil.php">
                 <i class="bi bi-person-circle"></i> Perfil
               </a>
             </li>
