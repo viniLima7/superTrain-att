@@ -1,5 +1,5 @@
 <?php 
- if (session_start() !== PHP_SESSION_ACTIVE) {
+ if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
  }
 
@@ -19,7 +19,22 @@
     if($email === '' || $senha === '') {
       $erro = 'Preencha o login e a senha.';
     } else {
-      $stmt = $conexao->prepare('SELECT id, email, ');
+      $stmt = $conexao->prepare('SELECT id, email, senha_hash FROM usuarios WHERE email = ? LIMIT 1');
+      $stmt->bind_param('s', $email);
+      $stmt->execute();
+      $usuario = $stmt->get_result()->fetch_assoc();
+      $stmt->close();
+
+      if ($usuario && password_verify($senha, $usuario['senha_hash'])) {
+        session_regenerate_id(true);
+        $_SESSION['usuario_id'] = (int) $usuario['id'];
+        $_SESSION['usuario_email'] = $usuario['email'];
+
+        header('Location: dashboard.php');
+        exit;
+      }
+
+      $erro = 'Login ou senha inválidas.';
     }
   }
 ?>
