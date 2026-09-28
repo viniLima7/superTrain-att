@@ -1,3 +1,7 @@
+ <?php
+  require 'proteger.php'
+  ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 

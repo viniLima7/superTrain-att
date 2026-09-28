@@ -1,3 +1,7 @@
+ <?php
+  require 'proteger.php'
+  ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -13,6 +17,7 @@
 
 <body>
   <header>
+
     <nav class="navbar navbar-expand-lg bg-blur">
       <div class="container-fluid">
         <a class="navbar-brand" href="dashboard.html">
