@@ -47,7 +47,7 @@
           </button>
 
           <div class="auth-links">
-            <a href="login.html" class="voltar-login">
+            <a href="login.php" class="voltar-login">
               <i class="bi bi-arrow-left"></i> Voltar para o Login
             </a>
           </div>

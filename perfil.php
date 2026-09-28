@@ -1,13 +1,7 @@
-<?php
-if (session_status() !== PHP_SESSION_ACTIVE) {
-    session_start();
-}
+ <?php
+  require 'proteger.php'
+  ?>
 
-if (!isset($_SESSION['usuario_id'])) {
-    header('Location: login.php');
-    exit;
-}
-?>
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -349,7 +343,7 @@ if (!isset($_SESSION['usuario_id'])) {
 
           <!-- BOTÕES DE AÇÃO -->
           <div class="perfil-actions-bar">
-            <a href="sair.php" class="btn-danger-custom">
+            <a href="login.php" class="btn-danger-custom">
               <i class="bi bi-box-arrow-right"></i> Sair da Conta
             </a>
             <button type="button" class="btn-secondary-custom" onclick="window.history.back()">

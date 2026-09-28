@@ -1,13 +1,7 @@
-<?php
-if (session_status() !== PHP_SESSION_ACTIVE) {
-    session_start();
-}
+ <?php
+  require 'proteger.php'
+  ?>
 
-if (!isset($_SESSION['usuario_id'])) {
-    header('Location: login.php');
-    exit;
-}
-?>
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -23,6 +17,7 @@ if (!isset($_SESSION['usuario_id'])) {
 
 <body>
   <header>
+
     <nav class="navbar navbar-expand-lg bg-blur">
       <div class="container-fluid">
         <a class="navbar-brand" href="dashboard.php">
