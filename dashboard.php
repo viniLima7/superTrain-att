@@ -62,7 +62,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-danger" href="sair.php">
+              <a class="nav-link text-danger" onclick="return confirm('Tem certeza que deseja sair?');" href="sair.php">
                 <i class="bi bi-box-arrow-right"></i> Sair
               </a>
             </li>

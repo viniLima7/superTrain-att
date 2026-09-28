@@ -86,12 +86,12 @@
         <form method="post" autocomplete="off">
           <div class="form-group mb-3">
             <label for="usuario" class="form-label">E-mail</label>
-            <input type="text" id="emailUsuario" name="emailUsuario" class="form-control" placeholder="Seu E-mail de usuário" maxlength="150" required>
+            <input type="text" id="emailUsuario" name="emailUsuario" class="form-control" placeholder="E-mail de usuário" maxlength="150" required>
           </div>
 
           <div class="form-group mb-4">
             <label for="senha" class="form-label">Senha</label>
-            <input type="password" id="senha" name="senha" class="form-control" placeholder="Sua senha secreta" required autocomplete="current-password" required>
+            <input type="password" id="senha" name="senha" class="form-control" placeholder="Senha" required autocomplete="current-password" required>
           </div>
 
           <button type="submit" class="btn w-100 btn-login">
