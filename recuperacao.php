@@ -16,7 +16,7 @@
   <header>
     <nav class="navbar bg-blur">
       <div class="container-fluid">
-        <a class="navbar-brand" href="login.html">
+        <a class="navbar-brand" href="login.php">
           <img src="imagens/logo.png" alt="SuperTrain Logo" width="36" height="28" class="d-inline-block">
           SuperTrain
         </a>
