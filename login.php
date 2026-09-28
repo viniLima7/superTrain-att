@@ -101,9 +101,9 @@
           <div class="auth-links">
             <p>Não possui uma conta?</p>
             <div>
-              <a href="cadastro.html" class="auth-link">Cadastre-se</a>
+              <a href="cadastro.php" class="auth-link">Cadastre-se</a>
               <span class="auth-divider">•</span>
-              <a href="recuperacao.html" class="auth-link">Esqueceu a senha?</a>
+              <a href="recuperacao.php" class="auth-link">Esqueceu a senha?</a>
             </div>
           </div>
         </form>
