@@ -25,7 +25,7 @@
       $usuario = $stmt->get_result()->fetch_assoc();
       $stmt->close();
 
-      if ($usuario && password_verify($senha, $usuario['senha'])) {
+      if ($usuario && password_verify($senha, $usuario['senha_hash'])) {
         session_regenerate_id(true);
         $_SESSION['usuario_id'] = (int) $usuario['id'];
         $_SESSION['usuario_email'] = $usuario['email'];
