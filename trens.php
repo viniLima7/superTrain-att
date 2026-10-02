@@ -1,12 +1,6 @@
 <?php
-if (session_status() !== PHP_SESSION_ACTIVE) {
-    session_start();
-}
+require 'proteger.php';
 
-if (!isset($_SESSION['usuario_id'])) {
-    header('Location: login.php');
-    exit;
-}
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -137,9 +131,9 @@ if (!isset($_SESSION['usuario_id'])) {
                           <button class="btn btn-sm btn-outline-secondary" title="Editar informações do trem">
                             <i class="bi bi-pencil"></i> Editar
                           </button>
-                          <button class="btn btn-sm btn-outline-secondary" title="Opções avançadas">
+                          <a class="btn btn-sm btn-outline-secondary" title="Opções avançadas" href="">
                             <i class="bi bi-three-dots-vertical"></i> Mais
-                          </button>
+                          </a>
                         </div>
                       </div>
                     </div>
@@ -182,9 +176,9 @@ if (!isset($_SESSION['usuario_id'])) {
                           <div class="speed-unit">KM / H</div>
                         </div>
                         <div class="train-actions">
-                          <button class="btn btn-sm btn-outline-secondary" title="Editar informações do trem">
+                          <a class="btn btn-sm btn-outline-secondary" title="Editar informações do trem" href="formulario.php">
                             <i class="bi bi-pencil"></i> Editar
-                          </button>
+                          </a>
                           <button class="btn btn-sm btn-outline-secondary" title="Opções avançadas">
                             <i class="bi bi-three-dots-vertical"></i> Mais
                           </button>

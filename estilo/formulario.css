@@ -1,0 +1,149 @@
+/* ==========================================================================
+   SUPERTRAIN - TELA DE FORMULÁRIO DE TRENS
+   Dark Glassmorphism Interface para Cadastro e Edição de Trens
+   ========================================================================== */
+
+@import "global.css";
+
+.formulario-wrapper {
+    max-width: 650px;
+    margin: 1.5rem auto 4rem auto;
+    padding: 0 1rem;
+}
+
+.texto-indicativo {
+    font-family: var(--font-heading);
+    font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+    color: var(--cor-texto-primario);
+    text-align: center;
+    margin-bottom: 1.75rem;
+    letter-spacing: 0.03em;
+}
+
+.formulario-card {
+    background: var(--cor-fundo-card);
+    backdrop-filter: blur(24px) saturate(190%);
+    -webkit-backdrop-filter: blur(24px) saturate(190%);
+    border: 1px solid var(--borda-vidro);
+    border-radius: var(--raio-lg);
+    box-shadow: var(--sombra-card), 0 0 40px rgba(15, 23, 42, 0.6);
+    padding: 2.5rem 2.25rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.formulario-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #3b82f6, #60a5fa, #1d4ed8);
+}
+
+.card-title {
+    font-family: var(--font-heading);
+    font-size: 1.75rem;
+    color: #ffffff;
+    letter-spacing: 0.05em;
+    margin-bottom: 1.75rem;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+/* Alertas de Erro */
+.aviso {
+    border-radius: var(--raio-md);
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    backdrop-filter: blur(10px);
+}
+
+.aviso-erro {
+    background: rgba(244, 63, 94, 0.12);
+    border: 1px solid rgba(244, 63, 94, 0.3);
+    border-left: 4px solid var(--status-parado);
+    color: #fca5a5;
+}
+
+.aviso-erro ul {
+    margin: 0;
+    padding-left: 1.25rem;
+}
+
+.aviso-erro li {
+    margin-bottom: 0.35rem;
+}
+
+.aviso-erro li:last-child {
+    margin-bottom: 0;
+}
+
+/* Compatibilidade com classes originais */
+.linha {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.linha .campo {
+    flex: 1 1 200px;
+}
+
+.campo {
+    margin-bottom: 1.25rem;
+}
+
+.acoes {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    margin-top: 1.5rem;
+}
+
+.botao {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--raio-md);
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all var(--transicao-media);
+}
+
+.botao-primario {
+    background: var(--gradiente-primario) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 16px rgba(37, 99, 235, 0.35);
+}
+
+.botao-primario:hover {
+    background: var(--gradiente-primario-hover) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(37, 99, 235, 0.5), 0 0 20px rgba(59, 130, 246, 0.35);
+    color: #ffffff !important;
+}
+
+.botao-secundario {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--borda-vidro);
+    color: var(--cor-texto-secundario);
+}
+
+.botao-secundario:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-1px);
+}
