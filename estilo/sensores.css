@@ -5,52 +5,474 @@
 
 @import "global.css";
 
+
+/* ==========================================================================
+   ESTRUTURA PRINCIPAL
+   ========================================================================== */
+
+main {
+    width: 100%;
+}
+
+
+/* ==========================================================================
+   TÍTULO DA PÁGINA
+   ========================================================================== */
+
 .sensores-wrapper {
-    max-width: 600px;
-    margin: 1.5rem auto 4rem auto;
-    padding: 0 1rem;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
 }
 
 .texto-indicativo {
     font-family: var(--font-heading);
     font-size: clamp(1.2rem, 2.5vw, 1.6rem);
     color: var(--cor-texto-primario);
-    text-align: center;
+    text-align: left;
     margin-bottom: 1.75rem;
     letter-spacing: 0.03em;
 }
 
-.sensores-card {
+
+/* ==========================================================================
+   CONTAINER DA LISTA DE SENSORES
+   ========================================================================== */
+
+.sensores-container {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+
+/* ==========================================================================
+   CARD DOS SENSORES
+   ========================================================================== */
+
+.trens-card {
+    width: 100%;
+    margin: 0;
+
     background: var(--cor-fundo-card);
     backdrop-filter: blur(24px) saturate(190%);
     -webkit-backdrop-filter: blur(24px) saturate(190%);
+
     border: 1px solid var(--borda-vidro);
     border-radius: var(--raio-lg);
-    box-shadow: var(--sombra-card), 0 0 40px rgba(15, 23, 42, 0.6);
-    padding: 2.5rem 2.25rem;
-    position: relative;
+
+    box-shadow:
+        var(--sombra-card),
+        0 0 40px rgba(15, 23, 42, 0.6);
+
     overflow: hidden;
 }
 
+
+/* ==========================================================================
+   CARD NOVO SENSOR
+   ========================================================================== */
+
+.sensores-card {
+    background: var(--cor-fundo-card);
+
+    backdrop-filter: blur(24px) saturate(190%);
+    -webkit-backdrop-filter: blur(24px) saturate(190%);
+
+    border: 1px solid var(--borda-vidro);
+    border-radius: var(--raio-lg);
+
+    box-shadow:
+        var(--sombra-card),
+        0 0 40px rgba(15, 23, 42, 0.6);
+
+    padding: 2.5rem 2.25rem;
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+
+/* Linha superior azul */
+
 .sensores-card::before {
     content: "";
+
     position: absolute;
+
     top: 0;
     left: 0;
     right: 0;
+
     height: 3px;
-    background: linear-gradient(90deg, #3b82f6, #60a5fa, #1d4ed8);
+
+    background: linear-gradient(
+        90deg,
+        #3b82f6,
+        #60a5fa,
+        #1d4ed8
+    );
 }
+
+
+/* ==========================================================================
+   TÍTULOS DOS CARDS
+   ========================================================================== */
 
 .card-title {
     font-family: var(--font-heading);
+
     font-size: 1.6rem;
+
     color: #ffffff;
+
     letter-spacing: 0.04em;
+
     margin-bottom: 1.75rem;
+
     text-align: center;
 }
 
+
+/* ==========================================================================
+   CABEÇALHO DO CARD DE SENSORES
+   ========================================================================== */
+
+.card-header-custom {
+    padding: 1.5rem 1.75rem;
+
+    border-bottom: 1px solid var(--borda-vidro);
+}
+
+
+/* ==========================================================================
+   ÁREA DE ROLAGEM DOS SENSORES
+   ========================================================================== */
+
+.sensores-scroll {
+    width: 100%;
+
+    /*
+       A lista possui sua própria altura.
+       Dessa forma, somente os sensores rolam.
+    */
+
+    max-height: calc(100vh - 250px);
+
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+
+/* ==========================================================================
+   CABEÇALHO DA TABELA
+   ========================================================================== */
+
+.sensores-scroll thead th {
+    position: sticky;
+
+    top: 0;
+
+    z-index: 5;
+
+    background: var(--cor-fundo-card);
+}
+
+
+/* ==========================================================================
+   TABELA
+   ========================================================================== */
+
+.sensores-scroll table {
+    width: 100%;
+
+    /*
+       Evita que a tabela fique muito apertada.
+       Em telas menores haverá rolagem horizontal.
+    */
+
+    min-width: 850px;
+}
+
+
+.sensores-scroll th,
+.sensores-scroll td {
+    vertical-align: middle;
+
+    white-space: nowrap;
+}
+
+
+/* Espaçamento das células */
+
+.sensores-scroll th,
+.sensores-scroll td {
+    padding: 14px 12px;
+}
+
+
+/* ==========================================================================
+   LINHAS DOS SENSORES
+   ========================================================================== */
+
+.train-row {
+    vertical-align: middle;
+}
+
+
+/* ==========================================================================
+   AÇÕES DOS SENSORES
+   ========================================================================== */
+
+.train-actions {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 6px;
+}
+
+
+.train-actions .btn {
+    white-space: nowrap;
+}
+
+
+/* ==========================================================================
+   CONTAINER DO NOVO SENSOR
+   ========================================================================== */
+
+.novo-sensor-container {
+    width: 100%;
+
+    /*
+       Mantém o formulário visível
+       enquanto a lista de sensores é rolada.
+    */
+
+    position: sticky;
+
+    top: 20px;
+}
+
+
+/* Card ocupa toda a coluna */
+
+.novo-sensor-container .sensores-card {
+    width: 100%;
+
+    margin: 0;
+}
+
+
+/* ==========================================================================
+   FORMULÁRIO
+   ========================================================================== */
+
+.novo-sensor-container form {
+    width: 100%;
+}
+
+
 .form-group {
     margin-bottom: 1.35rem;
+}
+
+
+.novo-sensor-container .form-label {
+    margin-bottom: 7px;
+}
+
+
+.novo-sensor-container .form-select {
+    width: 100%;
+}
+
+
+/* ==========================================================================
+   BOTÃO SALVAR
+   ========================================================================== */
+
+.btn-salvar-sensor {
+    width: 100%;
+}
+
+
+/* ==========================================================================
+   BARRA DE ROLAGEM
+   ========================================================================== */
+
+.sensores-scroll::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+
+.sensores-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+
+.sensores-scroll::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+}
+
+
+/* ==========================================================================
+   TELAS GRANDES
+   ========================================================================== */
+
+@media (min-width: 1200px) {
+
+    /*
+       Deixa a área dos sensores um pouco maior.
+    */
+
+    .sensores-scroll {
+        max-height: calc(100vh - 250px);
+    }
+
+}
+
+
+/* ==========================================================================
+   NOTEBOOKS / TELAS MÉDIAS
+   ========================================================================== */
+
+@media (max-width: 1199.98px) {
+
+    .sensores-scroll table {
+        min-width: 800px;
+    }
+
+}
+
+
+/* ==========================================================================
+   TABLETS
+   Bootstrap LG = 992px
+   ========================================================================== */
+
+@media (max-width: 991.98px) {
+
+    /*
+       As duas colunas deixam de ficar lado a lado.
+    */
+
+    .novo-sensor-container {
+        position: static;
+    }
+
+
+    /*
+       A lista continua com rolagem própria.
+    */
+
+    .sensores-scroll {
+        max-height: 500px;
+    }
+
+
+    /*
+       Mantém espaçamento adequado
+       quando o formulário passa para baixo.
+    */
+
+    .novo-sensor-container {
+        margin-top: 0;
+    }
+
+
+    .texto-indicativo {
+        text-align: center;
+    }
+
+}
+
+
+/* ==========================================================================
+   CELULARES
+   ========================================================================== */
+
+@media (max-width: 767.98px) {
+
+    .sensores-scroll {
+        max-height: 450px;
+    }
+
+
+    .sensores-scroll table {
+        min-width: 800px;
+    }
+
+
+    /*
+       Botões ficam um abaixo do outro.
+    */
+
+    .train-actions {
+        flex-direction: column;
+    }
+
+
+    .train-actions .btn {
+        width: 100%;
+    }
+
+
+    /*
+       Reduz o espaçamento interno
+       do formulário.
+    */
+
+    .sensores-card {
+        padding: 2rem 1.5rem;
+    }
+
+}
+
+
+/* ==========================================================================
+   CELULARES PEQUENOS
+   ========================================================================== */
+
+@media (max-width: 575.98px) {
+
+    /*
+       Reduz as margens laterais.
+    */
+
+    .container-fluid.px-4 {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+    }
+
+
+    .sensores-scroll {
+        max-height: 400px;
+    }
+
+
+    .sensores-scroll table {
+        min-width: 780px;
+    }
+
+
+    .texto-indicativo {
+        font-size: 1.3rem;
+    }
+
+
+    .sensores-card {
+        padding: 1.75rem 1.25rem;
+    }
+
+
+    .card-title {
+        font-size: 1.4rem;
+    }
+
 }
