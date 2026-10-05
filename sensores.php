@@ -20,19 +20,15 @@ if (!isset($_SESSION['usuario_id'])) {
 
     <title>Sensores - SuperTrain</title>
 
-    <!-- Bootstrap -->
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         rel="stylesheet"
     >
 
-    <!-- Bootstrap Icons -->
     <link
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
     >
-
-    <!-- CSS da página -->
     <link
         rel="stylesheet"
         href="estilo/sensores.css"
@@ -43,10 +39,6 @@ if (!isset($_SESSION['usuario_id'])) {
 
 <body>
 
-
-    <!-- =========================================
-         NAVBAR
-    ========================================== -->
 
     <header>
 
@@ -68,8 +60,6 @@ if (!isset($_SESSION['usuario_id'])) {
 
                 </a>
 
-
-                <!-- BOTÃO MOBILE -->
                 <button
                     class="navbar-toggler"
                     type="button"
@@ -84,8 +74,6 @@ if (!isset($_SESSION['usuario_id'])) {
 
                 </button>
 
-
-                <!-- MENU -->
                 <div
                     class="collapse navbar-collapse"
                     id="navbarSuperTrain"
@@ -93,8 +81,6 @@ if (!isset($_SESSION['usuario_id'])) {
 
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 
-
-                        <!-- DASHBOARD -->
                         <li class="nav-item">
 
                             <a
@@ -109,9 +95,6 @@ if (!isset($_SESSION['usuario_id'])) {
                             </a>
 
                         </li>
-
-
-                        <!-- TRENS -->
                         <li class="nav-item">
 
                             <a
@@ -127,8 +110,6 @@ if (!isset($_SESSION['usuario_id'])) {
 
                         </li>
 
-
-                        <!-- ROTAS -->
                         <li class="nav-item">
 
                             <a
@@ -144,8 +125,6 @@ if (!isset($_SESSION['usuario_id'])) {
 
                         </li>
 
-
-                        <!-- SENSORES -->
                         <li class="nav-item">
 
                             <a
@@ -163,7 +142,6 @@ if (!isset($_SESSION['usuario_id'])) {
                         </li>
 
 
-                        <!-- RELATÓRIOS -->
                         <li class="nav-item">
 
                             <a
@@ -179,8 +157,6 @@ if (!isset($_SESSION['usuario_id'])) {
 
                         </li>
 
-
-                        <!-- PERFIL -->
                         <li class="nav-item">
 
                             <a
@@ -197,7 +173,6 @@ if (!isset($_SESSION['usuario_id'])) {
                         </li>
 
 
-                        <!-- SAIR -->
                         <li class="nav-item">
 
                             <a
@@ -224,11 +199,6 @@ if (!isset($_SESSION['usuario_id'])) {
 
     </header>
 
-
-    <!-- =========================================
-         CONTEÚDO PRINCIPAL
-    ========================================== -->
-
     <main>
 
 
@@ -245,19 +215,10 @@ if (!isset($_SESSION['usuario_id'])) {
         </div>
 
 
-        <!-- =========================================
-             DUAS COLUNAS PRINCIPAIS
-        ========================================== -->
-
         <div class="container-fluid px-4 pb-4">
 
             <div class="row g-4 align-items-start">
 
-
-                <!-- =====================================
-                     COLUNA ESQUERDA
-                     SENSORES
-                ====================================== -->
 
                 <div class="col-12 col-lg-8">
 
@@ -279,10 +240,6 @@ if (!isset($_SESSION['usuario_id'])) {
 
                             </div>
 
-
-                            <!-- =================================
-                                 ÁREA COM ROLAGEM
-                            ================================== -->
 
                             <div class="sensores-scroll">
 
@@ -328,10 +285,6 @@ if (!isset($_SESSION['usuario_id'])) {
                                         </thead>
 
 
-                                        <!-- =================================
-                                             CORPO DA TABELA
-                                        ================================== -->
-
                                         <tbody id="tabelaSensores">
 
                                             <!--
@@ -361,11 +314,6 @@ if (!isset($_SESSION['usuario_id'])) {
                 </div>
 
 
-                <!-- =====================================
-                     COLUNA DIREITA
-                     NOVO SENSOR
-                ====================================== -->
-
                 <div class="col-12 col-lg-4">
 
 
@@ -382,16 +330,9 @@ if (!isset($_SESSION['usuario_id'])) {
                             </h1>
 
 
-                            <!-- =================================
-                                 FORMULÁRIO
-                            ================================== -->
 
                             <form id="formNovoSensor">
 
-
-                                <!-- =================================
-                                     NÚMERO DO TREM
-                                ================================== -->
 
                                 <div class="form-group mb-3">
 
@@ -465,10 +406,6 @@ if (!isset($_SESSION['usuario_id'])) {
                                 </div>
 
 
-                                <!-- =================================
-                                     MODELO DO SENSOR
-                                ================================== -->
-
                                 <div class="form-group mb-3">
 
 
@@ -533,10 +470,6 @@ if (!isset($_SESSION['usuario_id'])) {
 
                                 </div>
 
-
-                                <!-- =================================
-                                     PONTO DO TRILHO
-                                ================================== -->
 
                                 <div class="form-group mb-4">
 
@@ -610,9 +543,6 @@ if (!isset($_SESSION['usuario_id'])) {
                                 </div>
 
 
-                                <!-- =================================
-                                     PONTO DO TREM
-                                ================================== -->
 
                                 <div class="form-group mb-4">
 
@@ -686,10 +616,6 @@ if (!isset($_SESSION['usuario_id'])) {
                                 </div>
 
 
-                                <!-- =================================
-                                     BOTÃO SALVAR
-                                ================================== -->
-
                                 <button
                                     type="submit"
                                     class="btn w-100 btn-salvar-sensor"
@@ -723,43 +649,22 @@ if (!isset($_SESSION['usuario_id'])) {
     </main>
 
 
-    <!-- =========================================
-         BOOTSTRAP JS
-    ========================================== -->
-
     <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
     </script>
 
 
-    <!-- =========================================
-         JAVASCRIPT DOS SENSORES
-    ========================================== -->
-
     <script>
-
-        // =========================================
-        // ELEMENTOS DO FORMULÁRIO E DA TABELA
-        // =========================================
 
         const formulario = document.getElementById("formNovoSensor");
 
         const tabelaSensores = document.getElementById("tabelaSensores");
 
 
-        // =========================================
-        // SALVAR NOVO SENSOR
-        // =========================================
-
         formulario.addEventListener("submit", function(event) {
 
             // Impede o formulário de recarregar a página
             event.preventDefault();
-
-
-            // =====================================
-            // PEGA OS CAMPOS
-            // =====================================
 
             const selectTrem =
                 document.getElementById("numTrem");
@@ -773,10 +678,6 @@ if (!isset($_SESSION['usuario_id'])) {
             const selectPontoTrem =
                 document.getElementById("selectPontoTrem");
 
-
-            // =====================================
-            // VERIFICAÇÃO
-            // =====================================
 
             if (
                 selectTrem.value === "" ||
@@ -792,11 +693,6 @@ if (!isset($_SESSION['usuario_id'])) {
                 return;
 
             }
-
-
-            // =====================================
-            // PEGA O TEXTO DOS SELECTS
-            // =====================================
 
             const trem =
                 selectTrem.options[
@@ -822,17 +718,8 @@ if (!isset($_SESSION['usuario_id'])) {
                 ].text.trim();
 
 
-            // =====================================
-            // CRIA UMA NOVA LINHA
-            // =====================================
-
             const novaLinha =
                 document.createElement("tr");
-
-
-            // =====================================
-            // CRIA O CONTEÚDO DA LINHA
-            // =====================================
 
             novaLinha.innerHTML = `
 
@@ -875,32 +762,17 @@ if (!isset($_SESSION['usuario_id'])) {
             `;
 
 
-            // =====================================
-            // ADICIONA A LINHA NA TABELA
-            // =====================================
-
             tabelaSensores.appendChild(novaLinha);
 
-
-            // =====================================
-            // LIMPA O FORMULÁRIO
-            // =====================================
 
             formulario.reset();
 
 
-            // =====================================
-            // MENSAGEM
-            // =====================================
 
             alert("Sensor cadastrado com sucesso!");
 
         });
 
-
-        // =========================================
-        // EXCLUIR SENSOR
-        // =========================================
 
         function excluirSensor(botao) {
 
@@ -921,9 +793,6 @@ if (!isset($_SESSION['usuario_id'])) {
         }
 
 
-        // =========================================
-        // EDITAR SENSOR
-        // =========================================
 
         function editarSensor(botao) {
 
