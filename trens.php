@@ -1,5 +1,38 @@
 <?php
 require 'proteger.php';
+require 'config.php';
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['excluir_id'])) {
+  $id = (int) $_POST['excluir_id'];
+
+  $stmt = $conexao->prepare('DELETE FROM trens WHERE id_trem = ?');
+  $stmt->bind_param('i', $id);
+
+  if ($stmt->execute()) {
+    $_SESSION['mensagem'] = 'Trem excluído com sucesso.';
+
+    header('Location: trens.php');
+
+    $stmt->close();
+
+    exit;
+  } else {
+    $_SESSION['mensagem'] = 'Erro ao excluir o trem.';
+
+    header('Location: trens.php');
+
+    $stmt->close();
+
+    exit;
+  }
+}
+
+$mensagem = $_SESSION['mensagem'] ?? '';
+
+unset($_SESSION['mensagem']);
+
+$resultado = $conexao->query('SELECT * FROM trens ORDER BY prefixo');
 
 ?>
 <!DOCTYPE html>
@@ -9,7 +42,7 @@ require 'proteger.php';
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Trens - SuperTrain</title>
-  
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
   <link rel="stylesheet" href="estilo/trens.css" />
@@ -82,117 +115,118 @@ require 'proteger.php';
           </p>
         </div>
 
-        <div class="table-responsive">
-          <table class="table text-center mb-0">
-            <thead>
-              <tr>
-                <th scope="col">Linha</th>
-                <th scope="col">Trajeto</th>
-                <th scope="col">Tipo</th>
-                <th scope="col">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <!-- PRIMEIRO TREM -->
-              <tr class="train-row" data-bs-toggle="collapse" data-bs-target="#detalhes-trem-1" aria-expanded="false">
-                <th scope="row">130</th>
-                <td>Norte / Sul</td>
-                <td>Passageiros</td>
-                <td>
-                  <span class="status-ativo">
-                    <span class="status-dot"></span> Ativo
-                  </span>
-                </td>
-              </tr>
-              <tr class="collapse" id="detalhes-trem-1">
-                <td colspan="4" class="p-0 border-0">
-                  <div class="detail-box">
-                    <div class="row g-3 align-items-center">
-                      <div class="col-md-7">
-                        <div class="detail-label">
-                          <i class="bi bi-geo-alt-fill text-primary"></i> Localização via GPS
-                        </div>
-                        <div class="map-container">
-                          <iframe
-                            src="https://maps.google.com/maps?q=Joinville&t=&z=14&ie=UTF8&iwloc=&output=embed"
-                            class="w-100 h-100 border-0" allowfullscreen="" loading="lazy">
-                          </iframe>
-                        </div>
-                      </div>
-                      <div class="col-md-5 d-flex flex-column justify-content-between">
-                        <div class="speed-metric-card">
-                          <div class="detail-label justify-content-center">
-                            <i class="bi bi-speedometer2"></i> Velocidade Atual
-                          </div>
-                          <div class="speed-number">37</div>
-                          <div class="speed-unit">KM / H</div>
-                        </div>
-                        <div class="train-actions">
-                          <button class="btn btn-sm btn-outline-secondary" title="Editar informações do trem">
-                            <i class="bi bi-pencil"></i> Editar
-                          </button>
-                          <a class="btn btn-sm btn-outline-secondary" title="Opções avançadas" href="">
-                            <i class="bi bi-three-dots-vertical"></i> Mais
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </td>
-              </tr>
+        <?php
+        if ($mensagem !== ''):
+        ?>
 
-              <!-- SEGUNDO TREM -->
-              <tr class="train-row" data-bs-toggle="collapse" data-bs-target="#detalhes-trem-2" aria-expanded="false">
-                <th scope="row">140</th>
-                <td>Sul / Norte</td>
-                <td>Carga</td>
-                <td>
-                  <span class="status-ativo">
-                    <span class="status-dot"></span> Ativo
-                  </span>
-                </td>
-              </tr>
-              <tr class="collapse" id="detalhes-trem-2">
-                <td colspan="4" class="p-0 border-0">
-                  <div class="detail-box">
-                    <div class="row g-3 align-items-center">
-                      <div class="col-md-7">
-                        <div class="detail-label">
-                          <i class="bi bi-geo-alt-fill text-primary"></i> Localização via GPS
-                        </div>
-                        <div class="map-container">
-                          <iframe
-                            src="https://maps.google.com/maps?q=Joinville&t=&z=14&ie=UTF8&iwloc=&output=embed"
-                            class="w-100 h-100 border-0" allowfullscreen="" loading="lazy">
-                          </iframe>
-                        </div>
-                      </div>
-                      <div class="col-md-5 d-flex flex-column justify-content-between">
-                        <div class="speed-metric-card">
-                          <div class="detail-label justify-content-center">
-                            <i class="bi bi-speedometer2"></i> Velocidade Atual
+          <p class="aviso"><?= htmlspecialchars($mensagem) ?></p>
+
+        <?php
+        endif;
+        ?>
+
+        <?php
+        if ($resultado->num_rows === 0):
+        ?>
+
+          <p class="abiso">Nenhum trem cadastrado</p>
+
+        <?php
+        else:
+        ?>
+          <div class="table-responsive">
+            <table class="table text-center mb-0">
+              <thead>
+                <tr>
+                  <th scope="col">Linha</th>
+                  <th scope="col">Modelo</th>
+                  <th scope="col">Capacidade</th>
+                  <th scope="col">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+
+                <?php
+                while ($linha = $resultado->fetch_assoc()) :
+                ?>
+
+                  <!-- CRIAÇÃO DOS TRENS -->
+                  <tr class="train-row" data-bs-toggle="collapse" data-bs-target="#detalhes-trem-<?= htmlspecialchars($linha['id']) ?>" aria-expanded="false">
+                    <td scope="row"><?= htmlspecialchars($linha['prefixo']) ?></td>
+                    <td><?= htmlspecialchars($linha['modelo_composicao']) ?></td>
+                    <td><?= number_format((float) $linha['capacidade_maxima'], 2, ',', '.') ?></td>
+                    <td>
+                      <span class="status-<?= [
+                        'ativo' => 'ativo',
+                        'manutencao' => 'atencao',
+                        'parado' => 'parado'
+                      ][$linha['status_operacional']] ?? 'desconhecido';?>">
+
+                        <span class="status-dot"></span> <?= [
+                          'ativo' => 'Ativo',
+                          'manutencao' => 'Manutenção',
+                          'parado' => 'Parado'
+                        ][$linha['status_operacional']] ?? 'desconhecido';?>
+                      </span>
+                    </td>
+                  </tr>
+                  <tr class="collapse" id="detalhes-trem-<?= htmlspecialchars($linha['id']) ?>">
+                    <td colspan="4" class="p-0 border-0">
+                      <div class="detail-box">
+                        <div class="row g-3 align-items-center">
+                          <div class="col-md-7">
+                            <div class="detail-label">
+                              <i class="bi bi-geo-alt-fill text-primary"></i> Localização via GPS
+                            </div>
+                            <div class="map-container">
+                              <iframe
+                                src="https://maps.google.com/maps?q=Joinville&t=&z=14&ie=UTF8&iwloc=&output=embed"
+                                class="w-100 h-100 border-0" allowfullscreen="" loading="lazy">
+                              </iframe>
+                            </div>
                           </div>
-                          <div class="speed-number">45</div>
-                          <div class="speed-unit">KM / H</div>
-                        </div>
-                        <div class="train-actions">
-                          <a class="btn btn-sm btn-outline-secondary" title="Editar informações do trem" href="formulario.php">
-                            <i class="bi bi-pencil"></i> Editar
-                          </a>
-                          <button class="btn btn-sm btn-outline-secondary" title="Opções avançadas">
-                            <i class="bi bi-three-dots-vertical"></i> Mais
-                          </button>
+                          <div class="col-md-5 d-flex flex-column justify-content-between">
+                            <div class="speed-metric-card">
+                              <div class="detail-label justify-content-center">
+                                <i class="bi bi-speedometer2"></i> Velocidade Atual
+                              </div>
+                              <div class="speed-number">1</div>
+                              <div class="speed-unit">KM / H</div>
+                            </div>
+
+                            <div class="train-actions">
+                              <a class="btn btn-sm btn-outline-secondary" title="Editar informações do trem" href="formulario.php?id=<?= (int) $linha['id'] ?>">
+                                <i class="bi bi-pencil"></i> Editar
+                              </a>
+
+                              <form method="post" onsubmit="return confirm('Confirma a exlusão do trem?');">
+
+                                <input type="hidden" name="exluir_id" value="<?= (int) $linha['id'] ?>">
+
+                                <button class="btn btn-sm btn-outline-danger" title="Excluir trem">
+                                  <i class="bi bi-trash"></i> Excluir
+                                </button>
+
+                              </form>
+
+
+                            </div>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+                    </td>
+                  </tr>
+                <?php
+                endwhile;
+                ?>
+              </tbody>
+            </table>
+          </div>
       </div>
     </div>
+  <?php
+        endif;
+  ?>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
