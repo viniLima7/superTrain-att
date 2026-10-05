@@ -107,6 +107,12 @@ $resultado = $conexao->query('SELECT * FROM trens ORDER BY prefixo');
 
   <main>
     <div class="container trens-container">
+        <div class="header-actions mb-2">
+            <a href="formulario.php?id=0" class="btn btn-primary">
+              <i class="bi bi-plus-lg"></i>
+              <span>Adicionar Trem</span>
+            </a>
+          </div>
       <div class="card card-bg-blur trens-card">
         <div class="card-header-custom">
           <h1 class="card-title">Frota de Trens</h1>
@@ -129,7 +135,14 @@ $resultado = $conexao->query('SELECT * FROM trens ORDER BY prefixo');
         if ($resultado->num_rows === 0):
         ?>
 
-          <p class="abiso">Nenhum trem cadastrado</p>
+          <div class="empty-fleet-state">
+            <i class="bi bi-train-front empty-icon"></i>
+            <p class="empty-text">Nenhum trem cadastrado no momento.</p>
+            <a href="formulario.php" class="btn btn-primary btn-adicionar-trem">
+              <i class="bi bi-plus-lg"></i>
+              <span>Cadastrar Primeiro Trem</span>
+            </a>
+          </div>
 
         <?php
         else:
@@ -199,9 +212,9 @@ $resultado = $conexao->query('SELECT * FROM trens ORDER BY prefixo');
                                 <i class="bi bi-pencil"></i> Editar
                               </a>
 
-                              <form method="post" onsubmit="return confirm('Confirma a exlusão do trem?');">
+                              <form method="post" onsubmit="return confirm('Confirma a exclusão do trem?');">
 
-                                <input type="hidden" name="exluir_id" value="<?= (int) $linha['id'] ?>">
+                                <input type="hidden" name="excluir_id" value="<?= (int) $linha['id'] ?>">
 
                                 <button class="btn btn-sm btn-outline-danger" title="Excluir trem">
                                   <i class="bi bi-trash"></i> Excluir
