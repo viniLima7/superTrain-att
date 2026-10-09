@@ -56,6 +56,7 @@ main {
     margin: 0;
 
     background: var(--cor-fundo-card);
+
     backdrop-filter: blur(24px) saturate(190%);
     -webkit-backdrop-filter: blur(24px) saturate(190%);
 
@@ -90,7 +91,6 @@ main {
     padding: 2.5rem 2.25rem;
 
     position: relative;
-
     overflow: hidden;
 }
 
@@ -118,7 +118,7 @@ main {
 
 
 /* ==========================================================================
-   TÍTULOS DOS CARDS
+   TÍTULOS
    ========================================================================== */
 
 .card-title {
@@ -137,7 +137,7 @@ main {
 
 
 /* ==========================================================================
-   CABEÇALHO DO CARD DE SENSORES
+   CABEÇALHO DO CARD
    ========================================================================== */
 
 .card-header-custom {
@@ -148,16 +148,11 @@ main {
 
 
 /* ==========================================================================
-   ÁREA DE ROLAGEM DOS SENSORES
+   ÁREA DE ROLAGEM
    ========================================================================== */
 
 .sensores-scroll {
     width: 100%;
-
-    /*
-       A lista possui sua própria altura.
-       Dessa forma, somente os sensores rolam.
-    */
 
     max-height: calc(100vh - 250px);
 
@@ -188,11 +183,6 @@ main {
 .sensores-scroll table {
     width: 100%;
 
-    /*
-       Evita que a tabela fique muito apertada.
-       Em telas menores haverá rolagem horizontal.
-    */
-
     min-width: 850px;
 }
 
@@ -202,13 +192,7 @@ main {
     vertical-align: middle;
 
     white-space: nowrap;
-}
 
-
-/* Espaçamento das células */
-
-.sensores-scroll th,
-.sensores-scroll td {
     padding: 14px 12px;
 }
 
@@ -242,16 +226,133 @@ main {
 
 
 /* ==========================================================================
-   CONTAINER DO NOVO SENSOR
+   BOTÕES EDITAR / EXCLUIR
+   IMPORTANTE: FICA FORA DOS @MEDIA
    ========================================================================== */
+
+.sensores-scroll .acoes {
+    white-space: nowrap;
+
+    text-align: center;
+
+    vertical-align: middle;
+}
+
+
+/* Estilo geral */
+
+.sensores-scroll .acoes .botao {
+    display: inline-flex !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    gap: 5px !important;
+
+    width: auto !important;
+    height: auto !important;
+
+    margin: 0 2px !important;
+
+    padding: 6px 10px !important;
+
+    border-radius: 6px !important;
+
+    font-family: inherit !important;
+
+    font-size: 13px !important;
+
+    font-weight: 500 !important;
+
+    line-height: 1.5 !important;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+
+    box-shadow: none !important;
+
+    text-decoration: none !important;
+}
+
+
+/* ==========================================================================
+   BOTÃO EDITAR
+   ========================================================================== */
+
+.sensores-scroll .acoes .botao-secundario {
+    background-color: #18243a !important;
+
+    color: #dbe5f5 !important;
+
+    border: 1px solid #34445e !important;
+
+    border-color: #34445e !important;
+}
+
+
+.sensores-scroll .acoes .botao-secundario:hover {
+    background-color: #243653 !important;
+
+    color: #ffffff !important;
+
+    border-color: #536b91 !important;
+
+    transform: translateY(-1px);
+}
+
+
+/* ==========================================================================
+   BOTÃO EXCLUIR
+   ========================================================================== */
+
+.sensores-scroll .acoes .botao-perigo {
+    background-color: #351d27 !important;
+
+    color: #f0a7b5 !important;
+
+    border: 1px solid #5a2d3b !important;
+
+    border-color: #5a2d3b !important;
+}
+
+
+.sensores-scroll .acoes .botao-perigo:hover {
+    background-color: #4a2532 !important;
+
+    color: #ffffff !important;
+
+    border-color: #8a4054 !important;
+
+    transform: translateY(-1px);
+}
+
+
+/* ==========================================================================
+   ÍCONES
+   ========================================================================== */
+
+.sensores-scroll .acoes .botao i {
+    font-size: 14px !important;
+
+    color: inherit !important;
+
+    margin: 0 !important;
+}
+
+
+/* ==========================================================================
+   EFEITO AO CLICAR
+   ========================================================================== */
+
+.sensores-scroll .acoes .botao:active {
+    transform: scale(0.97);
+}
+
+
 
 .novo-sensor-container {
     width: 100%;
-
-    /*
-       Mantém o formulário visível
-       enquanto a lista de sensores é rolada.
-    */
 
     position: sticky;
 
@@ -267,10 +368,6 @@ main {
     margin: 0;
 }
 
-
-/* ==========================================================================
-   FORMULÁRIO
-   ========================================================================== */
 
 .novo-sensor-container form {
     width: 100%;
@@ -292,18 +389,10 @@ main {
 }
 
 
-/* ==========================================================================
-   BOTÃO SALVAR
-   ========================================================================== */
-
 .btn-salvar-sensor {
     width: 100%;
 }
 
-
-/* ==========================================================================
-   BARRA DE ROLAGEM
-   ========================================================================== */
 
 .sensores-scroll::-webkit-scrollbar {
     width: 8px;
@@ -321,15 +410,7 @@ main {
 }
 
 
-/* ==========================================================================
-   TELAS GRANDES
-   ========================================================================== */
-
 @media (min-width: 1200px) {
-
-    /*
-       Deixa a área dos sensores um pouco maior.
-    */
 
     .sensores-scroll {
         max-height: calc(100vh - 250px);
@@ -337,10 +418,6 @@ main {
 
 }
 
-
-/* ==========================================================================
-   NOTEBOOKS / TELAS MÉDIAS
-   ========================================================================== */
 
 @media (max-width: 1199.98px) {
 
@@ -351,35 +428,17 @@ main {
 }
 
 
-/* ==========================================================================
-   TABLETS
-   Bootstrap LG = 992px
-   ========================================================================== */
-
 @media (max-width: 991.98px) {
-
-    /*
-       As duas colunas deixam de ficar lado a lado.
-    */
 
     .novo-sensor-container {
         position: static;
     }
 
 
-    /*
-       A lista continua com rolagem própria.
-    */
-
     .sensores-scroll {
         max-height: 500px;
     }
 
-
-    /*
-       Mantém espaçamento adequado
-       quando o formulário passa para baixo.
-    */
 
     .novo-sensor-container {
         margin-top: 0;
@@ -391,11 +450,6 @@ main {
     }
 
 }
-
-
-/* ==========================================================================
-   CELULARES
-   ========================================================================== */
 
 @media (max-width: 767.98px) {
 
@@ -409,10 +463,6 @@ main {
     }
 
 
-    /*
-       Botões ficam um abaixo do outro.
-    */
-
     .train-actions {
         flex-direction: column;
     }
@@ -423,30 +473,17 @@ main {
     }
 
 
-    /*
-       Reduz o espaçamento interno
-       do formulário.
-    */
-
     .sensores-card {
         padding: 2rem 1.5rem;
     }
 
 }
 
-
-/* ==========================================================================
-   CELULARES PEQUENOS
-   ========================================================================== */
-
 @media (max-width: 575.98px) {
-
-    /*
-       Reduz as margens laterais.
-    */
 
     .container-fluid.px-4 {
         padding-left: 12px !important;
+
         padding-right: 12px !important;
     }
 

@@ -350,6 +350,23 @@ a:hover {
     transform: translateY(-1px);
 }
 
+.btn-outline-danger {
+    background: rgba(244, 63, 94, 0.08);
+    border: 1px solid rgba(244, 63, 94, 0.35);
+    color: #fda4af;
+    border-radius: var(--raio-sm);
+    padding: 0.4rem 0.75rem;
+    transition: all var(--transicao-rapida);
+}
+
+.btn-outline-danger:hover {
+    background: rgba(244, 63, 94, 0.22);
+    color: #ffffff;
+    border-color: #f43f5e;
+    box-shadow: 0 0 12px rgba(244, 63, 94, 0.3);
+    transform: translateY(-1px);
+}
+
 /* --- TABELAS MINIMALISTAS --- */
 .table-responsive {
     border-radius: var(--raio-md);

@@ -127,6 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               </a>
             </li>
             <li class="nav-item">
+              
               <a class="nav-link active" aria-current="page" href="trens.php">
                 <i class="bi bi-train-front"></i> Trens
               </a>
