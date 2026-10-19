@@ -29,6 +29,7 @@
         session_regenerate_id(true);
         $_SESSION['usuario_id'] = (int) $usuario['id'];
         $_SESSION['usuario_email'] = $usuario['email'];
+        $_SESSION['nivel_acesso'] = $usuario['nivel_acesso'] ?? 'user';
 
         header('Location: dashboard.php');
         exit;

@@ -51,6 +51,13 @@
                 <i class="bi bi-broadcast-pin"></i> Sensores
               </a>
             </li>
+            <?php if ($_SESSION['nivel_acesso'] === 'admin'): ?>
+              <li class="nav-item">
+                <a class="nav-link" href="relatorios.php">
+                  <i class="bi bi-file-earmark-bar-graph"></i> Relatórios
+                </a>
+              </li>
+              <?php endif; ?>
             <li class="nav-item">
               <a class="nav-link" href="relatorios.php">
                 <i class="bi bi-file-earmark-bar-graph"></i> Relatórios
