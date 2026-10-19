@@ -33,17 +33,7 @@ if($fim){
 $sql = "
 SELECT pontualidade_global_percentual, passageiros_transportados, consumo_energetico_kwh_km0"
 
-
 ?>
-
-
-
-
-
-
-
-
-
 
 <html lang="pt-br">
 <head>

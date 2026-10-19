@@ -252,7 +252,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 id="direcao_linha"
                 name="direcao_linha"
                 maxlength="20"
-                placeholder="Norte - Sul"
+                placeholder="130 Norte - Sul"
                 value="<?= htmlspecialchars($direcao_linha) ?>"
                 required>
             </div>
