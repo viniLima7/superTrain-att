@@ -84,62 +84,18 @@ if ($fim) {
 }
 
 $sql = "
-    SELECT r.id, r.protocolo, r.tipo_relatorio, r.data_hora_registro,
-           r.status_sumario, r.parecer_tecnico,
-           r.assinatura_digital_sha256,
-           l.codigo_linha, l.nome_linha,
-           t.prefixo, t.modelo_composicao,
-           o.nome_completo AS operador_nome
-    FROM relatorios_operacionais r
-    INNER JOIN linhas l ON l.id = r.linha_id
-    LEFT JOIN trens t ON t.id = r.trem_id
-    INNER JOIN operadores o ON o.id = r.operador_id
-";
+SELECT pontualidade_global_percentual, passageiros_transportados, consumo_energetico_kwh_km0"
 
-if ($where) $sql .= ' WHERE ' . implode(' AND ', $where);
-$sql .= ' ORDER BY r.data_hora_registro DESC';
 
-$stmt = $conexao->prepare($sql);
-if ($params) $stmt->bind_param($tipos, ...$params);
-$stmt->execute();
+?>
 
-$relatorios = $stmt->get_result();
-$totalRelatorios = $relatorios->num_rows;
 
-$whereFluxo = [];
-$paramsFluxo = [];
-$tiposFluxo = '';
 
-if ($inicio) {
-    $whereFluxo[] = 'DATE(tel.data_hora) >= ?';
-    $paramsFluxo[] = $inicio;
-    $tiposFluxo .= 's';
-}
 
-if ($fim) {
-    $whereFluxo[] = 'DATE(tel.data_hora) <= ?';
-    $paramsFluxo[] = $fim;
-    $tiposFluxo .= 's';
-}
 
-$sql = "
-    SELECT l.id, l.codigo_linha, l.nome_linha,
-           COALESCE(AVG(tel.ocupacao_percentual), 0) AS ocupacao_media
-    FROM linhas l
-    LEFT JOIN trens t ON t.linha_id = l.id AND t.ativo = TRUE
-    LEFT JOIN telemetria_trens tel ON tel.trem_id = t.id
-";
 
-if ($whereFluxo) $sql .= ' WHERE ' . implode(' AND ', $whereFluxo);
 
-$sql .= "
-    GROUP BY l.id, l.codigo_linha, l.nome_linha
-    ORDER BY ocupacao_media DESC
-";
 
-$stmt = $conexao->prepare($sql);
-if ($paramsFluxo) $stmt->bind_param($tiposFluxo, ...$paramsFluxo);
-$stmt->execute();
 
 
 <html lang="pt-br">

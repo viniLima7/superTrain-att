@@ -231,10 +231,6 @@ if (!isset($_SESSION['usuario_id'])) {
         <div class="row g-4 align-items-start">
 
 
-            <!-- =========================================================
-                 TABELA DE SENSORES
-                 ========================================================= -->
-
             <div class="col-12 col-lg-8">
 
                 <div class="sensores-container">
@@ -245,15 +241,13 @@ if (!isset($_SESSION['usuario_id'])) {
 
                         <!-- CABEÇALHO -->
 
-                        <div class="card-header-custom">
+                        <div class="card sensores-card">
 
                             <h1 class="card-title">
 
                                 Sensores
 
                             </h1>
-
-                        </div>
 
 
                         <div class="sensores-scroll">
@@ -308,29 +302,13 @@ if (!isset($_SESSION['usuario_id'])) {
                                         -->
 
                                     </tbody>
-
-
                                 </table>
-
-
                             </div>
-
-
                         </div>
-
-
+                        </div>
                     </div>
-
-
                 </div>
-
-
             </div>
-
-
-            <!-- =========================================================
-                 CADASTRO DE NOVO SENSOR
-                 ========================================================= -->
 
             <div class="col-12 col-lg-4">
 
@@ -681,35 +659,9 @@ if (!isset($_SESSION['usuario_id'])) {
 
 
 <script>
-
-/* ==========================================================================
-   SUPERTRAIN - GERENCIAMENTO DOS SENSORES
-   ========================================================================== */
-
-
-/*
-    Nome utilizado para guardar os sensores no navegador.
-
-    O localStorage permanece mesmo depois de:
-    - atualizar a página;
-    - fechar a página;
-    - fechar o navegador.
-*/
-
 const CHAVE_SENSORES = "supertrain_sensores";
-
-
-const formulario =
-    document.getElementById("formNovoSensor");
-
-
-const tabelaSensores =
-    document.getElementById("tabelaSensores");
-
-
-/* ==========================================================================
-   CARREGAR SENSORES
-   ========================================================================== */
+const formulario = document.getElementById("formNovoSensor");
+const tabelaSensores = document.getElementById("tabelaSensores");
 
 function carregarSensores() {
 
@@ -746,11 +698,6 @@ function carregarSensores() {
 
 }
 
-
-/* ==========================================================================
-   SALVAR SENSORES
-   ========================================================================== */
-
 function salvarSensores(sensores) {
 
     localStorage.setItem(
@@ -759,12 +706,6 @@ function salvarSensores(sensores) {
     );
 
 }
-
-
-/* ==========================================================================
-   GERAR ID ÚNICO
-   ========================================================================== */
-
 function gerarIdSensor() {
 
     return Date.now().toString() +
@@ -773,11 +714,6 @@ function gerarIdSensor() {
             .substring(2, 9);
 
 }
-
-
-/* ==========================================================================
-   CRIAR LINHA DA TABELA
-   ========================================================================== */
 
 function criarLinhaSensor(sensor) {
 
