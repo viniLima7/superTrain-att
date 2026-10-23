@@ -1,48 +1,145 @@
 <?php
+if (session_status() !== PHP_SESSION_ACTIVE) session_start();
 
-require'proteger.php';
+if (!isset($_SESSION['usuario_id'])) {
+    header('Location: login.php');
+    exit;
+}
 
 require 'config.php';
+
 $tipo = $_GET['tipo'] ?? 'todos';
 $linha = $_GET['linha'] ?? 'todas';
-$inicio = $_GET ['data_inicio'] ?? '';
-$fim = $_GET['data_fim'] ??'';
+$inicio = $_GET['data_inicio'] ?? '';
+$fim = $_GET['data_fim'] ?? '';
 
-$linhas = $conexao-> query("
-SELECT id, codigo_linha, nome_linha
-FROM linhas
-WHERE ativo = TRUE
-ORDER BY codigo_linha
+$linhas = $conexao->query("
+    SELECT id, codigo_linha, nome_linha
+    FROM linhas
+    WHERE ativo = TRUE
+    ORDER BY codigo_linha
 ");
 
 $whereKpi = [];
 $paramsKpi = [];
 $tiposKpi = '';
 
-if($inicio) {
-  $whereKpi[] = 'data_referencia >= ?';
-  $paramsKpi[] = $inicio;
-  $tiposKpi = 's';
+if ($inicio) {
+    $whereKpi[] = 'data_referencia >= ?';
+    $paramsKpi[] = $inicio;
+    $tiposKpi .= 's';
 }
-if($fim){
-  $whereKpi[] ='data_referencia <= ?';
-  $paramsKpi[] = $fim;
-  $tiposKpi ='s';
+if ($fim) {
+    $whereKpi[] = 'data_referencia <= ?';
+    $paramsKpi[] = $fim;
+    $tiposKpi .= 's';
 }
 
 $sql = "
-SELECT pontualidade_global_percentual, passageiros_transportados, consumo_energetico_kwh_km0"
+    SELECT pontualidade_global_percentual, passageiros_transportados,
+           consumo_energetico_kwh_km, confiabilidade_operacional_percentual
+    FROM kpis_malha_historico
+";
 
+if ($whereKpi) $sql .= ' WHERE ' . implode(' AND ', $whereKpi);
+$sql .= ' ORDER BY data_referencia DESC LIMIT 1';
 
-?>
+$stmt = $conexao->prepare($sql);
+if ($paramsKpi) $stmt->bind_param($tiposKpi, ...$paramsKpi);
+$stmt->execute();
 
+$kpi = $stmt->get_result()->fetch_assoc() ?: [];
 
+$pontualidade = $kpi['pontualidade_global_percentual'] ?? 0;
+$passageiros = $kpi['passageiros_transportados'] ?? 0;
+$consumo = $kpi['consumo_energetico_kwh_km'] ?? 0;
+$confiabilidade = $kpi['confiabilidade_operacional_percentual'] ?? 0;
 
+$where = [];
+$params = [];
+$tipos = '';
 
+if ($tipo != 'todos') {
+    $where[] = 'r.tipo_relatorio = ?';
+    $params[] = $tipo;
+    $tipos .= 's';
+}
 
+if ($linha != 'todas') {
+    $where[] = 'r.linha_id = ?';
+    $params[] = (int)$linha;
+    $tipos .= 'i';
+}
 
+if ($inicio) {
+    $where[] = 'DATE(r.data_hora_registro) >= ?';
+    $params[] = $inicio;
+    $tipos .= 's';
+}
 
+if ($fim) {
+    $where[] = 'DATE(r.data_hora_registro) <= ?';
+    $params[] = $fim;
+    $tipos .= 's';
+}
 
+$sql = "
+    SELECT r.id, r.protocolo, r.tipo_relatorio, r.data_hora_registro,
+           r.status_sumario, r.parecer_tecnico,
+           r.assinatura_digital_sha256,
+           l.codigo_linha, l.nome_linha,
+           t.prefixo, t.modelo_composicao,
+           o.nome_completo AS operador_nome
+    FROM relatorios_operacionais r
+    INNER JOIN linhas l ON l.id = r.linha_id
+    LEFT JOIN trens t ON t.id = r.trem_id
+    INNER JOIN operadores o ON o.id = r.operador_id
+";
+
+if ($where) $sql .= ' WHERE ' . implode(' AND ', $where);
+$sql .= ' ORDER BY r.data_hora_registro DESC';
+
+$stmt = $conexao->prepare($sql);
+if ($params) $stmt->bind_param($tipos, ...$params);
+$stmt->execute();
+
+$relatorios = $stmt->get_result();
+$totalRelatorios = $relatorios->num_rows;
+
+$whereFluxo = [];
+$paramsFluxo = [];
+$tiposFluxo = '';
+
+if ($inicio) {
+    $whereFluxo[] = 'DATE(tel.data_hora) >= ?';
+    $paramsFluxo[] = $inicio;
+    $tiposFluxo .= 's';
+}
+
+if ($fim) {
+    $whereFluxo[] = 'DATE(tel.data_hora) <= ?';
+    $paramsFluxo[] = $fim;
+    $tiposFluxo .= 's';
+}
+
+$sql = "
+    SELECT l.id, l.codigo_linha, l.nome_linha,
+           COALESCE(AVG(tel.ocupacao_percentual), 0) AS ocupacao_media
+    FROM linhas l
+    LEFT JOIN trens t ON t.linha_id = l.id AND t.ativo = TRUE
+    LEFT JOIN telemetria_trens tel ON tel.trem_id = t.id
+";
+
+if ($whereFluxo) $sql .= ' WHERE ' . implode(' AND ', $whereFluxo);
+
+$sql .= "
+    GROUP BY l.id, l.codigo_linha, l.nome_linha
+    ORDER BY ocupacao_media DESC
+";
+
+$stmt = $conexao->prepare($sql);
+if ($paramsFluxo) $stmt->bind_param($tiposFluxo, ...$paramsFluxo);
+$stmt->execute();
 
 
 <html lang="pt-br">
