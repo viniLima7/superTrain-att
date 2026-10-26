@@ -31,8 +31,59 @@ if($fim){
 }
 
 $sql = "
-SELECT pontualidade_global_percentual, passageiros_transportados, consumo_energetico_kwh_km0"
+SELECT pontualidade_global_percentual, passageiros_transportados, consumo_energetico_kwh_km, confiabilidade_operacional_percentual
+FROM kpis_malha_historico
+";
 
+if($whereKpi) {
+  $sql .= ' WHERE ' . implode(' AND ', $whereKpi);
+  $sql .= ' ORDER BY data_referencia DESC LIMIT 1';
+
+  $stmt = $conexao->prepare($sql);
+  if ($paramKpi) $stmt -> bind_param($tiposKpi, ...$paramsKpi);
+  $stmt->execute();
+
+  $kpi = $stmt->get_result()->fetch_assoc();
+
+  $pontualidade = $kpi['pontualidade_global_percentual'] ?? 0;
+    $passageiros = $kpi['passageiros_transportados'] ?? 0;
+    $consumo = $kpi['consumo_energetico_kwh_km'] ?? 0;
+    $confiabilidade = $kpi['confiabilidade_operacional_percentual'] ?? 0;
+
+    $where = [];
+    $params = [];
+    $tipos = '';
+
+    if($tipo != 'todos') {
+        $where[] = 'r.tipo_relatorio = ?';
+        $params[] = $tipo;
+        $tipos .= 's';
+    }
+
+    if($linha != 'todas') {
+        $where[] = 'r.linha_id = ?';
+        $params[] = (int)$linha;
+        $tipos .='i';
+    }
+
+    if($inicio) {
+        $where[] = 'DATE(r.data_hora_registro) >= ?';
+        $params[] = $inicio;
+        $tipos .= 's';
+    }
+
+    if($fim) {
+        $where[] = 'DATE(r.data_hora_registro) <= ?';
+        $params[] = $fim;
+        $tipos .= 's';
+    }
+
+    $sql = "
+    SELECT r.id, r.protocolo, r.tipo_relatorio, r.data_hora_registro, r.status_sumario, r.parecer_tecnico,
+    r.assinatura_digital_digital_sha256, l.codigo_linha, l.nome_linha, t.prefixo, t.modelo_composicao, o.nome_completo AS operador_nome
+    FROM relatorios_operacionais r INNER JOIN linhas l ON l.id = r.linha_id
+    LEFT JOIN trens t ON i.id = r.trem_id "
+}
 
 ?>
 
