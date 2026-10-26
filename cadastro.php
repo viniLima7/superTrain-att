@@ -4,7 +4,6 @@
   $email = '';
   $erros = [];
   $sucesso = '';
-  $nomePadrao = 'vazio';
   $paisPadrao = '1';
   $statusPadrao = 'ativo';
 
@@ -51,8 +50,8 @@
       } else {
         $hash = password_hash($senha, PASSWORD_DEFAULT);
 
-        $stmt = $conexao->prepare('INSERT INTO usuarios (`email`, `nome_usuario`, `senha_hash`, `pais_id`, `status_conta`) VALUES (?,?,?,?,?)');
-        $stmt-> bind_param('sssis', $email, $nomePadrao, $hash, $paisPadrao, $statusPadrao);
+        $stmt = $conexao->prepare('INSERT INTO usuarios (`email`, `senha_hash`, `pais_id`, `status_conta`) VALUES (?,?,?,?)');
+        $stmt-> bind_param('ssis', $email, $hash, $paisPadrao, $statusPadrao);
 
         if($stmt->execute()){
           $sucesso = 'Usúario cadastrado com sucesso!';

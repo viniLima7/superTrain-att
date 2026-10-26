@@ -100,6 +100,12 @@ if (!$resultado) {
             </li>
 
             <li class="nav-item">
+              <a class="nav-link" href="usuarios.php">
+                <i class="bi bi-people-fill"></i> usuários
+              </a>
+            </li>
+
+            <li class="nav-item">
               <a class="nav-link" href="trens.php">
                 <i class="bi bi-train-front"></i> Trens
               </a>

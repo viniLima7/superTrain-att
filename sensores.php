@@ -1,4 +1,3 @@
-
 <?php
 if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
@@ -23,18 +22,15 @@ if (!isset($_SESSION['usuario_id'])) {
 
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
+        rel="stylesheet">
 
     <link
         rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-    >
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <link
         rel="stylesheet"
-        href="estilo/sensores.css?v=1.0"
-    >
+        href="estilo/sensores.css?v=1.0">
 
 </head>
 
@@ -42,597 +38,584 @@ if (!isset($_SESSION['usuario_id'])) {
 <body>
 
 
-<header>
+    <header>
 
-    <nav class="navbar navbar-expand-lg bg-blur">
+        <nav class="navbar navbar-expand-lg bg-blur">
 
-        <div class="container-fluid">
+            <div class="container-fluid">
 
-            <!-- LOGO -->
-            <a class="navbar-brand" href="dashboard.php">
+                <!-- LOGO -->
+                <a class="navbar-brand" href="dashboard.php">
 
-                <img
-                    src="imagens/logo.png"
-                    alt="SuperTrain Logo"
-                    width="36"
-                    height="28"
-                >
+                    <img
+                        src="imagens/logo.png"
+                        alt="SuperTrain Logo"
+                        width="36"
+                        height="28">
 
-                SuperTrain
+                    SuperTrain
 
-            </a>
+                </a>
 
 
-            <button
-                class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarSuperTrain"
-                aria-controls="navbarSuperTrain"
-                aria-expanded="false"
-                aria-label="Toggle navigation"
-            >
+                <button
+                    class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarSuperTrain"
+                    aria-controls="navbarSuperTrain"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
 
-                <span class="navbar-toggler-icon"></span>
+                    <span class="navbar-toggler-icon"></span>
 
-            </button>
+                </button>
 
 
-            <div
-                class="collapse navbar-collapse"
-                id="navbarSuperTrain"
-            >
+                <div
+                    class="collapse navbar-collapse"
+                    id="navbarSuperTrain">
 
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 
 
-                    <li class="nav-item">
+                        <li class="nav-item">
 
-                        <a
-                            class="nav-link"
-                            href="dashboard.php"
-                        >
+                            <a
+                                class="nav-link"
+                                href="dashboard.php">
 
-                            <i class="bi bi-grid-fill"></i>
+                                <i class="bi bi-grid-fill"></i>
 
-                            Dashboard
+                                Dashboard
 
-                        </a>
+                            </a>
 
-                    </li>
+                        </li>
 
+                        <li class="nav-item">
+                            <a class="nav-link" href="usuarios.php">
+                                <i class="bi bi-people-fill"></i> usuários
+                            </a>
+                        </li>
 
-                    <li class="nav-item">
 
-                        <a
-                            class="nav-link"
-                            href="trens.php"
-                        >
 
-                            <i class="bi bi-train-front"></i>
+                        <li class="nav-item">
 
-                            Trens
+                            <a
+                                class="nav-link"
+                                href="trens.php">
 
-                        </a>
+                                <i class="bi bi-train-front"></i>
 
-                    </li>
+                                Trens
 
+                            </a>
 
-                    <li class="nav-item">
+                        </li>
 
-                        <a
-                            class="nav-link"
-                            href="rotas.php"
-                        >
 
-                            <i class="bi bi-signpost-split"></i>
+                        <li class="nav-item">
 
-                            Rotas
+                            <a
+                                class="nav-link"
+                                href="rotas.php">
 
-                        </a>
+                                <i class="bi bi-signpost-split"></i>
 
-                    </li>
+                                Rotas
 
+                            </a>
 
-                    <li class="nav-item">
+                        </li>
 
-                        <a
-                            class="nav-link active"
-                            aria-current="page"
-                            href="sensores.php"
-                        >
 
-                            <i class="bi bi-broadcast-pin"></i>
+                        <li class="nav-item">
 
-                            Sensores
+                            <a
+                                class="nav-link active"
+                                aria-current="page"
+                                href="sensores.php">
 
-                        </a>
-
-                    </li>
-
-
-                    <li class="nav-item">
-
-                        <a
-                            class="nav-link"
-                            href="relatorios.php"
-                        >
-
-                            <i class="bi bi-file-earmark-bar-graph"></i>
-
-                            Relatórios
-
-                        </a>
-
-                    </li>
-
-
-                    <li class="nav-item">
-
-                        <a
-                            class="nav-link"
-                            href="perfil.php"
-                        >
-
-                            <i class="bi bi-person-circle"></i>
-
-                            Perfil
-
-                        </a>
-
-                    </li>
-
-
-                    <li class="nav-item">
-
-                        <a
-                            class="nav-link text-danger"
-                            href="sair.php"
-                        >
-
-                            <i class="bi bi-box-arrow-right"></i>
-
-                            Sair
-
-                        </a>
-
-                    </li>
-
-
-                </ul>
-
-            </div>
-
-        </div>
-
-    </nav>
-
-</header>
-
-
-<main>
-
-
-    <!-- TÍTULO -->
-
-    <div class="container-fluid px-4 pt-4">
-
-        <h2 class="texto-indicativo">
-
-            Configuração de Sensores da Malha
-
-        </h2>
-
-    </div>
-
-
-    <div class="container-fluid px-4 pb-4">
-
-        <div class="row g-4 align-items-start">
-
-
-            <div class="col-12 col-lg-8">
-
-                <div class="sensores-container">
-
-
-                    <div class="card card-bg-blur trens-card">
-
-
-                        <!-- CABEÇALHO -->
-
-                        <div class="card sensores-card">
-
-                            <h1 class="card-title">
+                                <i class="bi bi-broadcast-pin"></i>
 
                                 Sensores
 
-                            </h1>
+                            </a>
+
+                        </li>
 
 
-                        <div class="sensores-scroll">
+                        <li class="nav-item">
+
+                            <a
+                                class="nav-link"
+                                href="relatorios.php">
+
+                                <i class="bi bi-file-earmark-bar-graph"></i>
+
+                                Relatórios
+
+                            </a>
+
+                        </li>
 
 
-                            <div class="table-responsive">
+                        <li class="nav-item">
+
+                            <a
+                                class="nav-link"
+                                href="perfil.php">
+
+                                <i class="bi bi-person-circle"></i>
+
+                                Perfil
+
+                            </a>
+
+                        </li>
 
 
-                                <table class="table text-center mb-0">
+                        <li class="nav-item">
+
+                            <a
+                                class="nav-link text-danger"
+                                href="sair.php">
+
+                                <i class="bi bi-box-arrow-right"></i>
+
+                                Sair
+
+                            </a>
+
+                        </li>
 
 
-                                    <!-- CABEÇALHO DA TABELA -->
+                    </ul>
 
-                                    <thead>
+                </div>
 
-                                        <tr>
+            </div>
 
-                                            <th scope="col">
-                                                Trem
-                                            </th>
+        </nav>
 
-
-                                            <th scope="col">
-                                                Sensor
-                                            </th>
+    </header>
 
 
-                                            <th scope="col">
-                                                Ponto de instalação / Trilho
-                                            </th>
+    <main>
 
 
-                                            <th scope="col">
-                                                Ponto de instalação / Trem
-                                            </th>
+        <!-- TÍTULO -->
+
+        <div class="container-fluid px-4 pt-4">
+
+            <h2 class="texto-indicativo">
+
+                Configuração de Sensores da Malha
+
+            </h2>
+
+        </div>
 
 
-                                            <th scope="col">
-                                                Ações
-                                            </th>
+        <div class="container-fluid px-4 pb-4">
 
-                                        </tr>
-
-                                    </thead>
+            <div class="row g-4 align-items-start">
 
 
-                                    <tbody id="tabelaSensores">
+                <div class="col-12 col-lg-8">
 
-                                        <!--
+                    <div class="sensores-container">
+
+
+                        <div class="card card-bg-blur trens-card">
+
+
+                            <!-- CABEÇALHO -->
+
+                            <div class="card sensores-card">
+
+                                <h1 class="card-title">
+
+                                    Sensores
+
+                                </h1>
+
+
+                                <div class="sensores-scroll">
+
+
+                                    <div class="table-responsive">
+
+
+                                        <table class="table text-center mb-0">
+
+
+                                            <!-- CABEÇALHO DA TABELA -->
+
+                                            <thead>
+
+                                                <tr>
+
+                                                    <th scope="col">
+                                                        Trem
+                                                    </th>
+
+
+                                                    <th scope="col">
+                                                        Sensor
+                                                    </th>
+
+
+                                                    <th scope="col">
+                                                        Ponto de instalação / Trilho
+                                                    </th>
+
+
+                                                    <th scope="col">
+                                                        Ponto de instalação / Trem
+                                                    </th>
+
+
+                                                    <th scope="col">
+                                                        Ações
+                                                    </th>
+
+                                                </tr>
+
+                                            </thead>
+
+
+                                            <tbody id="tabelaSensores">
+
+                                                <!--
                                             Os sensores serão carregados
                                             automaticamente pelo JavaScript.
                                         -->
 
-                                    </tbody>
-                                </table>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-12 col-lg-4">
+                <div class="col-12 col-lg-4">
 
 
-                <div class="novo-sensor-container">
+                    <div class="novo-sensor-container">
 
 
-                    <div class="card sensores-card">
+                        <div class="card sensores-card">
 
 
-                        <h1 class="card-title">
+                            <h1 class="card-title">
 
-                            Novo Sensor
+                                Novo Sensor
 
-                        </h1>
+                            </h1>
 
 
-                        <form id="formNovoSensor">
+                            <form id="formNovoSensor">
 
 
-                            <!-- TREM -->
+                                <!-- TREM -->
 
-                            <div class="form-group mb-3">
+                                <div class="form-group mb-3">
 
 
-                                <label
-                                    for="numTrem"
-                                    class="form-label"
-                                >
+                                    <label
+                                        for="numTrem"
+                                        class="form-label">
 
-                                    Trem
+                                        Trem
 
-                                </label>
+                                    </label>
 
 
-                                <select
-                                    id="numTrem"
-                                    name="numeroTrem"
-                                    class="form-select"
-                                >
+                                    <select
+                                        id="numTrem"
+                                        name="numeroTrem"
+                                        class="form-select">
 
 
-                                    <option
-                                        value=""
-                                        disabled
-                                        selected
-                                    >
+                                        <option
+                                            value=""
+                                            disabled
+                                            selected>
 
-                                        Selecione o número do trem
+                                            Selecione o número do trem
 
-                                    </option>
+                                        </option>
 
 
-                                    <option value="norte/sul">
+                                        <option value="norte/sul">
 
-                                        130 | Norte/Sul
+                                            130 | Norte/Sul
 
-                                    </option>
+                                        </option>
 
 
-                                    <option value="oeste/leste">
+                                        <option value="oeste/leste">
 
-                                        142 | Oeste/Leste
+                                            142 | Oeste/Leste
 
-                                    </option>
+                                        </option>
 
 
-                                    <option value="leste/norte">
+                                        <option value="leste/norte">
 
-                                        174 | Leste/Norte
+                                            174 | Leste/Norte
 
-                                    </option>
+                                        </option>
 
 
-                                    <option value="sul/norte">
+                                        <option value="sul/norte">
 
-                                        130 | Sul/Norte
+                                            130 | Sul/Norte
 
-                                    </option>
+                                        </option>
 
 
-                                    <option value="centro">
+                                        <option value="centro">
 
-                                        001 | Centro
+                                            001 | Centro
 
-                                    </option>
+                                        </option>
 
 
-                                </select>
+                                    </select>
 
 
-                            </div>
+                                </div>
 
 
-                            <!-- MODELO DO SENSOR -->
+                                <!-- MODELO DO SENSOR -->
 
-                            <div class="form-group mb-3">
+                                <div class="form-group mb-3">
 
 
-                                <label
-                                    for="selectTipoSensor"
-                                    class="form-label"
-                                >
+                                    <label
+                                        for="selectTipoSensor"
+                                        class="form-label">
 
-                                    Modelo do Sensor
+                                        Modelo do Sensor
 
-                                </label>
+                                    </label>
 
 
-                                <select
-                                    id="selectTipoSensor"
-                                    name="tipoSensor"
-                                    class="form-select"
-                                >
+                                    <select
+                                        id="selectTipoSensor"
+                                        name="tipoSensor"
+                                        class="form-select">
 
 
-                                    <option
-                                        value=""
-                                        disabled
-                                        selected
-                                    >
+                                        <option
+                                            value=""
+                                            disabled
+                                            selected>
 
-                                        Selecione o tipo de sensor
+                                            Selecione o tipo de sensor
 
-                                    </option>
+                                        </option>
 
 
-                                    <option value="ultrassonico">
+                                        <option value="ultrassonico">
 
-                                        Sensor Ultrassônico de Proximidade
+                                            Sensor Ultrassônico de Proximidade
 
-                                    </option>
+                                        </option>
 
 
-                                    <option value="movimento">
+                                        <option value="movimento">
 
-                                        Sensor de Presença & Movimento
+                                            Sensor de Presença & Movimento
 
-                                    </option>
+                                        </option>
 
 
-                                    <option value="localizador">
+                                        <option value="localizador">
 
-                                        Localizador Óptico / RFID
+                                            Localizador Óptico / RFID
 
-                                    </option>
+                                        </option>
 
 
-                                    <option value="temperatura">
+                                        <option value="temperatura">
 
-                                        Sensor Térmico de Trilhos
+                                            Sensor Térmico de Trilhos
 
-                                    </option>
+                                        </option>
 
 
-                                </select>
+                                    </select>
 
 
-                            </div>
+                                </div>
 
 
-                            <!-- PONTO NO TRILHO -->
+                                <!-- PONTO NO TRILHO -->
 
-                            <div class="form-group mb-4">
+                                <div class="form-group mb-4">
 
 
-                                <label
-                                    for="selectPontoTrilho"
-                                    class="form-label"
-                                >
+                                    <label
+                                        for="selectPontoTrilho"
+                                        class="form-label">
 
-                                    Ponto de Instalação / Trilho
+                                        Ponto de Instalação / Trilho
 
-                                </label>
+                                    </label>
 
 
-                                <select
-                                    id="selectPontoTrilho"
-                                    name="pontoTrilho"
-                                    class="form-select"
-                                >
+                                    <select
+                                        id="selectPontoTrilho"
+                                        name="pontoTrilho"
+                                        class="form-select">
 
 
-                                    <option
-                                        value=""
-                                        disabled
-                                        selected
-                                    >
+                                        <option
+                                            value=""
+                                            disabled
+                                            selected>
 
-                                        Selecione o ponto de monitoramento
+                                            Selecione o ponto de monitoramento
 
-                                    </option>
+                                        </option>
 
 
-                                    <option value="ponto1">
+                                        <option value="ponto1">
 
-                                        Não disponível
+                                            Não disponível
 
-                                    </option>
+                                        </option>
 
 
-                                    <option value="ponto2">
+                                        <option value="ponto2">
 
-                                        Ponto 1001
+                                            Ponto 1001
 
-                                    </option>
+                                        </option>
 
 
-                                    <option value="ponto3">
+                                        <option value="ponto3">
 
-                                        Ponto 1002
+                                            Ponto 1002
 
-                                    </option>
+                                        </option>
 
 
-                                    <option value="ponto4">
+                                        <option value="ponto4">
 
-                                        Ponto 1003
+                                            Ponto 1003
 
-                                    </option>
+                                        </option>
 
 
-                                    <option value="ponto5">
+                                        <option value="ponto5">
 
-                                        Ponto 1004
+                                            Ponto 1004
 
-                                    </option>
+                                        </option>
 
 
-                                </select>
+                                    </select>
 
 
-                            </div>
+                                </div>
 
 
-                            <!-- PONTO NO TREM -->
+                                <!-- PONTO NO TREM -->
 
-                            <div class="form-group mb-4">
+                                <div class="form-group mb-4">
 
 
-                                <label
-                                    for="selectPontoTrem"
-                                    class="form-label"
-                                >
+                                    <label
+                                        for="selectPontoTrem"
+                                        class="form-label">
 
-                                    Ponto de Instalação / Trem
+                                        Ponto de Instalação / Trem
 
-                                </label>
+                                    </label>
 
 
-                                <select
-                                    id="selectPontoTrem"
-                                    name="pontoTrem"
-                                    class="form-select"
-                                >
+                                    <select
+                                        id="selectPontoTrem"
+                                        name="pontoTrem"
+                                        class="form-select">
 
 
-                                    <option
-                                        value=""
-                                        disabled
-                                        selected
-                                    >
+                                        <option
+                                            value=""
+                                            disabled
+                                            selected>
 
-                                        Selecione o ponto de monitoramento
+                                            Selecione o ponto de monitoramento
 
-                                    </option>
+                                        </option>
 
 
-                                    <option value="ponto1">
+                                        <option value="ponto1">
 
-                                        Não disponível
+                                            Não disponível
 
-                                    </option>
+                                        </option>
 
 
-                                    <option value="ponto2">
+                                        <option value="ponto2">
 
-                                        Ponto 2001
+                                            Ponto 2001
 
-                                    </option>
+                                        </option>
 
 
-                                    <option value="ponto3">
+                                        <option value="ponto3">
 
-                                        Ponto 2002
+                                            Ponto 2002
 
-                                    </option>
+                                        </option>
 
 
-                                    <option value="ponto4">
+                                        <option value="ponto4">
 
-                                        Ponto 2003
+                                            Ponto 2003
 
-                                    </option>
+                                        </option>
 
 
-                                    <option value="ponto5">
+                                        <option value="ponto5">
 
-                                        Ponto 2004
+                                            Ponto 2004
 
-                                    </option>
+                                        </option>
 
 
-                                </select>
+                                    </select>
 
 
-                            </div>
+                                </div>
 
 
-                            <!-- BOTÃO SALVAR -->
+                                <!-- BOTÃO SALVAR -->
 
-                            <button
-                                type="submit"
-                                class="btn w-100 btn-salvar-sensor"
-                            >
+                                <button
+                                    type="submit"
+                                    class="btn w-100 btn-salvar-sensor">
 
-                                <i class="bi bi-save2"></i>
+                                    <i class="bi bi-save2"></i>
 
-                                Salvar Sensor
+                                    Salvar Sensor
 
-                            </button>
+                                </button>
 
 
-                        </form>
+                            </form>
+
+
+                        </div>
 
 
                     </div>
@@ -647,93 +630,91 @@ if (!isset($_SESSION['usuario_id'])) {
         </div>
 
 
-    </div>
+    </main>
 
 
-</main>
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+    </script>
 
 
-<script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
-</script>
+    <script>
+        const CHAVE_SENSORES = "supertrain_sensores";
+        const formulario = document.getElementById("formNovoSensor");
+        const tabelaSensores = document.getElementById("tabelaSensores");
+
+        function carregarSensores() {
+
+            const sensoresSalvos =
+                localStorage.getItem(CHAVE_SENSORES);
 
 
-<script>
-const CHAVE_SENSORES = "supertrain_sensores";
-const formulario = document.getElementById("formNovoSensor");
-const tabelaSensores = document.getElementById("tabelaSensores");
+            /*
+                Se ainda não existir nenhum sensor salvo,
+                retorna uma lista vazia.
+            */
 
-function carregarSensores() {
+            if (!sensoresSalvos) {
 
-    const sensoresSalvos =
-        localStorage.getItem(CHAVE_SENSORES);
+                return [];
 
-
-    /*
-        Se ainda não existir nenhum sensor salvo,
-        retorna uma lista vazia.
-    */
-
-    if (!sensoresSalvos) {
-
-        return [];
-
-    }
+            }
 
 
-    try {
+            try {
 
-        return JSON.parse(sensoresSalvos);
+                return JSON.parse(sensoresSalvos);
 
-    } catch (erro) {
+            } catch (erro) {
 
-        console.error(
-            "Erro ao carregar os sensores:",
-            erro
-        );
+                console.error(
+                    "Erro ao carregar os sensores:",
+                    erro
+                );
 
-        return [];
+                return [];
 
-    }
+            }
 
-}
+        }
 
-function salvarSensores(sensores) {
+        function salvarSensores(sensores) {
 
-    localStorage.setItem(
-        CHAVE_SENSORES,
-        JSON.stringify(sensores)
-    );
+            localStorage.setItem(
+                CHAVE_SENSORES,
+                JSON.stringify(sensores)
+            );
 
-}
-function gerarIdSensor() {
+        }
 
-    return Date.now().toString() +
-        Math.random()
-            .toString(36)
-            .substring(2, 9);
+        function gerarIdSensor() {
 
-}
+            return Date.now().toString() +
+                Math.random()
+                .toString(36)
+                .substring(2, 9);
 
-function criarLinhaSensor(sensor) {
+        }
 
-
-    const novaLinha =
-        document.createElement("tr");
+        function criarLinhaSensor(sensor) {
 
 
-    /*
-        O ID fica guardado na própria linha.
-
-        Isso permite descobrir exatamente qual sensor
-        deve ser excluído.
-    */
-
-    novaLinha.dataset.sensorId =
-        sensor.id;
+            const novaLinha =
+                document.createElement("tr");
 
 
-    novaLinha.innerHTML = `
+            /*
+                O ID fica guardado na própria linha.
+
+                Isso permite descobrir exatamente qual sensor
+                deve ser excluído.
+            */
+
+            novaLinha.dataset.sensorId =
+                sensor.id;
+
+
+            novaLinha.innerHTML = `
 
         <td>
             ${sensor.trem}
@@ -783,480 +764,477 @@ function criarLinhaSensor(sensor) {
     `;
 
 
-    return novaLinha;
+            return novaLinha;
 
-}
-
-
-/* ==========================================================================
-   RENDERIZAR SENSORES
-   ========================================================================== */
-
-function renderizarSensores() {
+        }
 
 
-    /*
-        Limpa a tabela antes de carregar novamente.
+        /* ==========================================================================
+           RENDERIZAR SENSORES
+           ========================================================================== */
 
-        Isso evita duplicação.
-    */
-
-    tabelaSensores.innerHTML = "";
+        function renderizarSensores() {
 
 
-    const sensores =
-        carregarSensores();
+            /*
+                Limpa a tabela antes de carregar novamente.
+
+                Isso evita duplicação.
+            */
+
+            tabelaSensores.innerHTML = "";
 
 
-    /*
-        Cria novamente cada sensor salvo.
-    */
-
-    sensores.forEach(function(sensor) {
-
-        const linha =
-            criarLinhaSensor(sensor);
+            const sensores =
+                carregarSensores();
 
 
-        tabelaSensores.appendChild(linha);
+            /*
+                Cria novamente cada sensor salvo.
+            */
 
-    });
+            sensores.forEach(function(sensor) {
 
-}
-
-
-/* ==========================================================================
-   SALVAR NOVO SENSOR
-   ========================================================================== */
-
-formulario.addEventListener(
-    "submit",
-    function(event) {
+                const linha =
+                    criarLinhaSensor(sensor);
 
 
-        /*
-            Impede que o formulário recarregue a página.
-        */
+                tabelaSensores.appendChild(linha);
 
-        event.preventDefault();
+            });
 
-
-        const selectTrem =
-            document.getElementById("numTrem");
+        }
 
 
-        const selectSensor =
-            document.getElementById("selectTipoSensor");
+        /* ==========================================================================
+           SALVAR NOVO SENSOR
+           ========================================================================== */
+
+        formulario.addEventListener(
+            "submit",
+            function(event) {
 
 
-        const selectTrilho =
-            document.getElementById("selectPontoTrilho");
+                /*
+                    Impede que o formulário recarregue a página.
+                */
+
+                event.preventDefault();
 
 
-        const selectPontoTrem =
-            document.getElementById("selectPontoTrem");
+                const selectTrem =
+                    document.getElementById("numTrem");
 
 
-        /*
-            Verifica se todos os campos foram preenchidos.
-        */
+                const selectSensor =
+                    document.getElementById("selectTipoSensor");
 
-        if (
 
-            selectTrem.value === "" ||
+                const selectTrilho =
+                    document.getElementById("selectPontoTrilho");
 
-            selectSensor.value === "" ||
 
-            selectTrilho.value === "" ||
+                const selectPontoTrem =
+                    document.getElementById("selectPontoTrem");
 
-            selectPontoTrem.value === ""
 
-        ) {
+                /*
+                    Verifica se todos os campos foram preenchidos.
+                */
 
-            alert(
-                "Preencha todos os campos antes de salvar o sensor."
+                if (
+
+                    selectTrem.value === "" ||
+
+                    selectSensor.value === "" ||
+
+                    selectTrilho.value === "" ||
+
+                    selectPontoTrem.value === ""
+
+                ) {
+
+                    alert(
+                        "Preencha todos os campos antes de salvar o sensor."
+                    );
+
+                    return;
+
+                }
+
+
+                /*
+                    Pega o texto que aparece para o usuário,
+                    e não somente o value da opção.
+                */
+
+                const trem =
+                    selectTrem.options[
+                        selectTrem.selectedIndex
+                    ].text.trim();
+
+
+                const sensor =
+                    selectSensor.options[
+                        selectSensor.selectedIndex
+                    ].text.trim();
+
+
+                const trilho =
+                    selectTrilho.options[
+                        selectTrilho.selectedIndex
+                    ].text.trim();
+
+
+                const pontoTrem =
+                    selectPontoTrem.options[
+                        selectPontoTrem.selectedIndex
+                    ].text.trim();
+
+
+                /*
+                    Cria o objeto do novo sensor.
+                */
+
+                const novoSensor = {
+
+                    id: gerarIdSensor(),
+
+                    trem: trem,
+
+                    sensor: sensor,
+
+                    trilho: trilho,
+
+                    pontoTrem: pontoTrem
+
+                };
+
+
+                /*
+                    Recupera os sensores que já existem.
+                */
+
+                const sensores =
+                    carregarSensores();
+
+
+                /*
+                    Adiciona o novo sensor à lista.
+                */
+
+                sensores.push(novoSensor);
+
+
+                /*
+                    SALVA NO NAVEGADOR.
+
+                    É esta linha que faz com que o sensor
+                    não desapareça quando a página for atualizada.
+                */
+
+                salvarSensores(sensores);
+
+
+                /*
+                    Cria visualmente a nova linha.
+                */
+
+                const novaLinha =
+                    criarLinhaSensor(novoSensor);
+
+
+                tabelaSensores.appendChild(
+                    novaLinha
+                );
+
+
+                /*
+                    Limpa o formulário.
+                */
+
+                formulario.reset();
+
+
+                alert(
+                    "Sensor cadastrado com sucesso!"
+                );
+
+            }
+        );
+
+
+        /* ==========================================================================
+           EXCLUIR SENSOR
+           ========================================================================== */
+
+        function excluirSensor(botao) {
+
+
+            const linha =
+                botao.closest("tr");
+
+
+            if (!linha) {
+
+                return;
+
+            }
+
+
+            const idSensor =
+                linha.dataset.sensorId;
+
+
+            if (!idSensor) {
+
+                return;
+
+            }
+
+
+            /*
+                Confirma a exclusão.
+            */
+
+            if (
+                !confirm(
+                    "Deseja realmente excluir este sensor?"
+                )
+            ) {
+
+                return;
+
+            }
+
+
+            /*
+                Recupera todos os sensores.
+            */
+
+            let sensores =
+                carregarSensores();
+
+
+            /*
+                Remove somente o sensor selecionado.
+            */
+
+            sensores =
+                sensores.filter(function(sensor) {
+
+                    return String(sensor.id) !==
+                        String(idSensor);
+
+                });
+
+
+            /*
+                Salva novamente a lista atualizada.
+
+                Assim o sensor também desaparece do localStorage.
+            */
+
+            salvarSensores(sensores);
+
+
+            /*
+                Remove visualmente da tabela.
+            */
+
+            linha.remove();
+
+
+        }
+
+
+        /* ==========================================================================
+           EDITAR SENSOR
+           ========================================================================== */
+
+        function editarSensor(botao) {
+
+
+            const linha =
+                botao.closest("tr");
+
+
+            const idSensor =
+                linha.dataset.sensorId;
+
+
+            const celulas =
+                linha.querySelectorAll("td");
+
+
+            /*
+                Localiza o sensor no armazenamento.
+            */
+
+            const sensores =
+                carregarSensores();
+
+
+            const sensor =
+                sensores.find(function(item) {
+
+                    return String(item.id) ===
+                        String(idSensor);
+
+                });
+
+
+            if (!sensor) {
+
+                return;
+
+            }
+
+
+            /*
+                Preenche novamente o formulário
+                com os dados do sensor.
+            */
+
+            const selectTrem =
+                document.getElementById("numTrem");
+
+
+            const selectSensor =
+                document.getElementById("selectTipoSensor");
+
+
+            const selectTrilho =
+                document.getElementById("selectPontoTrilho");
+
+
+            const selectPontoTrem =
+                document.getElementById("selectPontoTrem");
+
+
+            /*
+                Procura a opção pelo texto exibido.
+            */
+
+            selecionarOpcaoPorTexto(
+                selectTrem,
+                sensor.trem
             );
 
-            return;
+
+            selecionarOpcaoPorTexto(
+                selectSensor,
+                sensor.sensor
+            );
+
+
+            selecionarOpcaoPorTexto(
+                selectTrilho,
+                sensor.trilho
+            );
+
+
+            selecionarOpcaoPorTexto(
+                selectPontoTrem,
+                sensor.pontoTrem
+            );
+
+
+            /*
+                Remove o sensor antigo.
+
+                Depois o usuário pode salvá-lo novamente
+                com os dados modificados.
+            */
+
+            const novaLista =
+                sensores.filter(function(item) {
+
+                    return String(item.id) !==
+                        String(idSensor);
+
+                });
+
+
+            salvarSensores(novaLista);
+
+
+            /*
+                Remove a linha antiga.
+            */
+
+            linha.remove();
+
+
+            /*
+                Rola a tela para o formulário.
+            */
+
+            document
+                .querySelector(".novo-sensor-container")
+                .scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+
+
+            alert(
+                "Os dados do sensor foram carregados no formulário. Faça as alterações e clique em 'Salvar Sensor'."
+            );
 
         }
 
 
-        /*
-            Pega o texto que aparece para o usuário,
-            e não somente o value da opção.
-        */
-
-        const trem =
-            selectTrem.options[
-                selectTrem.selectedIndex
-            ].text.trim();
-
-
-        const sensor =
-            selectSensor.options[
-                selectSensor.selectedIndex
-            ].text.trim();
-
-
-        const trilho =
-            selectTrilho.options[
-                selectTrilho.selectedIndex
-            ].text.trim();
-
-
-        const pontoTrem =
-            selectPontoTrem.options[
-                selectPontoTrem.selectedIndex
-            ].text.trim();
-
-
-        /*
-            Cria o objeto do novo sensor.
-        */
-
-        const novoSensor = {
-
-            id: gerarIdSensor(),
-
-            trem: trem,
-
-            sensor: sensor,
-
-            trilho: trilho,
-
-            pontoTrem: pontoTrem
-
-        };
-
-
-        /*
-            Recupera os sensores que já existem.
-        */
-
-        const sensores =
-            carregarSensores();
-
-
-        /*
-            Adiciona o novo sensor à lista.
-        */
-
-        sensores.push(novoSensor);
-
-
-        /*
-            SALVA NO NAVEGADOR.
-
-            É esta linha que faz com que o sensor
-            não desapareça quando a página for atualizada.
-        */
-
-        salvarSensores(sensores);
-
-
-        /*
-            Cria visualmente a nova linha.
-        */
-
-        const novaLinha =
-            criarLinhaSensor(novoSensor);
-
-
-        tabelaSensores.appendChild(
-            novaLinha
-        );
-
-
-        /*
-            Limpa o formulário.
-        */
-
-        formulario.reset();
-
-
-        alert(
-            "Sensor cadastrado com sucesso!"
-        );
-
-    }
-);
-
-
-/* ==========================================================================
-   EXCLUIR SENSOR
-   ========================================================================== */
-
-function excluirSensor(botao) {
-
-
-    const linha =
-        botao.closest("tr");
-
-
-    if (!linha) {
-
-        return;
-
-    }
-
-
-    const idSensor =
-        linha.dataset.sensorId;
-
-
-    if (!idSensor) {
-
-        return;
-
-    }
-
-
-    /*
-        Confirma a exclusão.
-    */
-
-    if (
-        !confirm(
-            "Deseja realmente excluir este sensor?"
-        )
-    ) {
-
-        return;
-
-    }
-
-
-    /*
-        Recupera todos os sensores.
-    */
-
-    let sensores =
-        carregarSensores();
-
-
-    /*
-        Remove somente o sensor selecionado.
-    */
-
-    sensores =
-        sensores.filter(function(sensor) {
-
-            return String(sensor.id) !==
-                String(idSensor);
-
-        });
-
-
-    /*
-        Salva novamente a lista atualizada.
-
-        Assim o sensor também desaparece do localStorage.
-    */
-
-    salvarSensores(sensores);
-
-
-    /*
-        Remove visualmente da tabela.
-    */
-
-    linha.remove();
-
-
-}
-
-
-/* ==========================================================================
-   EDITAR SENSOR
-   ========================================================================== */
-
-function editarSensor(botao) {
-
-
-    const linha =
-        botao.closest("tr");
-
-
-    const idSensor =
-        linha.dataset.sensorId;
-
-
-    const celulas =
-        linha.querySelectorAll("td");
-
-
-    /*
-        Localiza o sensor no armazenamento.
-    */
-
-    const sensores =
-        carregarSensores();
-
-
-    const sensor =
-        sensores.find(function(item) {
-
-            return String(item.id) ===
-                String(idSensor);
-
-        });
-
-
-    if (!sensor) {
-
-        return;
-
-    }
-
-
-    /*
-        Preenche novamente o formulário
-        com os dados do sensor.
-    */
-
-    const selectTrem =
-        document.getElementById("numTrem");
-
-
-    const selectSensor =
-        document.getElementById("selectTipoSensor");
-
-
-    const selectTrilho =
-        document.getElementById("selectPontoTrilho");
-
-
-    const selectPontoTrem =
-        document.getElementById("selectPontoTrem");
-
-
-    /*
-        Procura a opção pelo texto exibido.
-    */
-
-    selecionarOpcaoPorTexto(
-        selectTrem,
-        sensor.trem
-    );
-
-
-    selecionarOpcaoPorTexto(
-        selectSensor,
-        sensor.sensor
-    );
-
-
-    selecionarOpcaoPorTexto(
-        selectTrilho,
-        sensor.trilho
-    );
-
-
-    selecionarOpcaoPorTexto(
-        selectPontoTrem,
-        sensor.pontoTrem
-    );
-
-
-    /*
-        Remove o sensor antigo.
-
-        Depois o usuário pode salvá-lo novamente
-        com os dados modificados.
-    */
-
-    const novaLista =
-        sensores.filter(function(item) {
-
-            return String(item.id) !==
-                String(idSensor);
-
-        });
-
-
-    salvarSensores(novaLista);
-
-
-    /*
-        Remove a linha antiga.
-    */
-
-    linha.remove();
-
-
-    /*
-        Rola a tela para o formulário.
-    */
-
-    document
-        .querySelector(".novo-sensor-container")
-        .scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
-
-
-    alert(
-        "Os dados do sensor foram carregados no formulário. Faça as alterações e clique em 'Salvar Sensor'."
-    );
-
-}
-
-
-/* ==========================================================================
-   SELECIONAR OPÇÃO PELO TEXTO
-   ========================================================================== */
-
-function selecionarOpcaoPorTexto(
-    select,
-    texto
-) {
-
-
-    for (
-        let i = 0;
-        i < select.options.length;
-        i++
-    ) {
-
-
-        if (
-            select.options[i]
-                .text
-                .trim() === texto.trim()
+        /* ==========================================================================
+           SELECIONAR OPÇÃO PELO TEXTO
+           ========================================================================== */
+
+        function selecionarOpcaoPorTexto(
+            select,
+            texto
         ) {
 
-            select.selectedIndex = i;
 
-            return;
+            for (
+                let i = 0; i < select.options.length; i++
+            ) {
+
+
+                if (
+                    select.options[i]
+                    .text
+                    .trim() === texto.trim()
+                ) {
+
+                    select.selectedIndex = i;
+
+                    return;
+
+                }
+
+            }
 
         }
 
-    }
 
-}
+        /* ==========================================================================
+           CARREGAR AUTOMATICAMENTE AO ABRIR A PÁGINA
+           ========================================================================== */
 
+        document.addEventListener(
+            "DOMContentLoaded",
+            function() {
 
-/* ==========================================================================
-   CARREGAR AUTOMATICAMENTE AO ABRIR A PÁGINA
-   ========================================================================== */
+                /*
+                    Recupera os sensores salvos
+                    assim que a página é aberta.
+                */
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function() {
+                renderizarSensores();
 
-        /*
-            Recupera os sensores salvos
-            assim que a página é aberta.
-        */
-
-        renderizarSensores();
-
-    }
-);
-
-</script>
+            }
+        );
+    </script>
 
 
 </body>
