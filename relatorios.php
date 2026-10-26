@@ -1,39 +1,71 @@
 <?php
+// 1. Inicia a sessão se ela ainda não estiver ativa
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
 
-require'proteger.php';
+// 2. Se o usuário não estiver logado, redireciona para a tela de login
+if (!isset($_SESSION['usuario_id'])) {
+    header('Location: login.php');
+    exit;
+}
 
+// 3. Inclui a conexão com o banco de dados
 require 'config.php';
-$tipo = $_GET['tipo'] ?? 'todos';
-$linha = $_GET['linha'] ?? 'todas';
-$inicio = $_GET ['data_inicio'] ?? '';
-$fim = $_GET['data_fim'] ??'';
 
-$linhas = $conexao-> query("
-SELECT id, codigo_linha, nome_linha
-FROM linhas
-WHERE ativo = TRUE
-ORDER BY codigo_linha
+// 4. Pega os filtros do formulário (com valores padrão se estiverem vazios)
+$tipo   = $_GET['tipo'] ?? 'todos';
+$linha  = $_GET['linha'] ?? 'todas';
+$inicio = $_GET['data_inicio'] ?? '';
+$fim    = $_GET['data_fim'] ?? '';
+
+// ----------------------------------------------------
+// CONSULTA 1: Busca as linhas ativas para o filtro <select>
+// ----------------------------------------------------
+$linhas = $conexao->query("
+    SELECT id, codigo_linha, nome_linha
+    FROM linhas
+    WHERE ativo = TRUE
+    ORDER BY codigo_linha
 ");
 
+// ----------------------------------------------------
+// CONSULTA 2: Busca os indicadores (KPIs)
+// ----------------------------------------------------
 $whereKpi = [];
 $paramsKpi = [];
 $tiposKpi = '';
 
-if($inicio) {
-  $whereKpi[] = 'data_referencia >= ?';
-  $paramsKpi[] = $inicio;
-  $tiposKpi = 's';
+if ($linha != 'todas') {
+    $whereKpi[] = 'linha_id = ?';
+    $paramsKpi[] = (int)$linha;
+    $tiposKpi .= 'i';
 }
-if($fim){
-  $whereKpi[] ='data_referencia <= ?';
-  $paramsKpi[] = $fim;
-  $tiposKpi ='s';
+if ($inicio) {
+    $whereKpi[] = 'data_referencia >= ?';
+    $paramsKpi[] = $inicio;
+    $tiposKpi .= 's';
+}
+if ($fim) {
+    $whereKpi[] = 'data_referencia <= ?';
+    $paramsKpi[] = $fim;
+    $tiposKpi .= 's';
 }
 
 $sql = "
 SELECT pontualidade_global_percentual, passageiros_transportados, consumo_energetico_kwh_km0"
 
+
 ?>
+
+
+
+
+
+
+
+
+
 
 <html lang="pt-br">
 <head>
@@ -48,6 +80,7 @@ SELECT pontualidade_global_percentual, passageiros_transportados, consumo_energe
 
 <body>
 
+<!-- NAVEGAÇÃO PRINCIPAL -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="dashboard.php">SuperTrain</a>
@@ -68,7 +101,7 @@ SELECT pontualidade_global_percentual, passageiros_transportados, consumo_energe
 
     <h1 class="mb-4">Relatórios Operacionais</h1>
 
-    <!-- FILTROS -->
+    <!-- FORMULÁRIO DE FILTROS -->
     <form method="GET" class="row g-3 mb-4">
 
         <div class="col-md-3">
@@ -108,14 +141,14 @@ SELECT pontualidade_global_percentual, passageiros_transportados, consumo_energe
         </div>
 
         <div class="col-md-2 d-flex align-items-end">
-            <button class="btn btn-primary w-100">
+            <button type="submit" class="btn btn-primary w-100">
                 <i class="bi bi-search"></i> Filtrar
             </button>
         </div>
 
     </form>
 
-    <!-- KPIs -->
+    <!-- CARDS DE KPIS -->
     <div class="row g-3 mb-4">
 
         <div class="col-md-3">
@@ -149,7 +182,7 @@ SELECT pontualidade_global_percentual, passageiros_transportados, consumo_energe
 
     </div>
 
-    <!-- FLUXO -->
+    <!-- SEÇÃO DE FLUXO POR LINHA -->
     <div class="card p-4 mb-4">
 
         <h4 class="mb-3">Fluxo por linha</h4>
@@ -174,7 +207,7 @@ SELECT pontualidade_global_percentual, passageiros_transportados, consumo_energe
 
     </div>
 
-    <!-- RELATÓRIOS -->
+    <!-- TABELA DE RELATÓRIOS -->
     <div class="card p-4">
 
         <div class="d-flex justify-content-between mb-3">
@@ -195,13 +228,13 @@ SELECT pontualidade_global_percentual, passageiros_transportados, consumo_energe
                         <th>Operador</th>
                         <th>Data</th>
                         <th>Status</th>
-                        <th></th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
 
                 <tbody>
 
-                <?php if ($relatorios->num_rows == 0): ?>
+                <?php if ($totalRelatorios == 0): ?>
 
                     <tr>
                         <td colspan="8" class="text-center">
@@ -223,8 +256,9 @@ SELECT pontualidade_global_percentual, passageiros_transportados, consumo_energe
                             <td><?= htmlspecialchars($r['status_sumario']) ?></td>
 
                             <td>
+                                <!-- Botão limpo sem complicar no HTML -->
                                 <button class="btn btn-sm btn-outline-primary"
-                                    onclick='abrirModal(<?= json_encode($r) ?>)'>
+                                    onclick='abrirModal(<?= htmlspecialchars(json_encode($r), ENT_QUOTES, "UTF-8") ?>)'>
                                     <i class="bi bi-eye"></i>
                                 </button>
                             </td>
@@ -242,7 +276,7 @@ SELECT pontualidade_global_percentual, passageiros_transportados, consumo_energe
 
 </div>
 
-<!-- MODAL -->
+<!-- JANELA MODAL DO BOOTSTRAP -->
 <div class="modal fade" id="modalRelatorio" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -261,23 +295,31 @@ SELECT pontualidade_global_percentual, passageiros_transportados, consumo_energe
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-function abrirModal(r) {
-    document.getElementById('conteudoModal').innerHTML = `
-        <p><strong>Protocolo:</strong> ${r.protocolo ?? '-'}</p>
-        <p><strong>Tipo:</strong> ${r.tipo_relatorio ?? '-'}</p>
-        <p><strong>Linha:</strong> ${r.codigo_linha ?? '-'} - ${r.nome_linha ?? '-'}</p>
-        <p><strong>Trem:</strong> ${r.prefixo ?? '-'}</p>
-        <p><strong>Modelo:</strong> ${r.modelo_composicao ?? '-'}</p>
-        <p><strong>Operador:</strong> ${r.operador_nome ?? '-'}</p>
-        <p><strong>Status:</strong> ${r.status_sumario ?? '-'}</p>
-        <p><strong>Parecer técnico:</strong> ${r.parecer_tecnico ?? '-'}</p>
-        <p><strong>Assinatura:</strong> ${r.assinatura_digital_sha256 ?? '-'}</p>
+// Função simples para exibir as informações no Modal sem dar erro de Javascript
+function abrirModal(dados) {
+    // Função auxiliar simples para tratar texto vazio
+    function texto(valor) {
+        return valor ? valor : '-';
+    }
+
+    let html = `
+        <p><strong>Protocolo:</strong> ${texto(dados.protocolo)}</p>
+        <p><strong>Tipo:</strong> ${texto(dados.tipo_relatorio)}</p>
+        <p><strong>Linha:</strong> ${texto(dados.codigo_linha)} - ${texto(dados.nome_linha)}</p>
+        <p><strong>Trem:</strong> ${texto(dados.prefixo)}</p>
+        <p><strong>Modelo:</strong> ${texto(dados.modelo_composicao)}</p>
+        <p><strong>Operador:</strong> ${texto(dados.operador_nome)}</p>
+        <p><strong>Status:</strong> ${texto(dados.status_sumario)}</p>
+        <p><strong>Parecer técnico:</strong> ${texto(dados.parecer_tecnico)}</p>
+        <p><strong>Assinatura:</strong> ${texto(dados.assinatura_digital_sha256)}</p>
     `;
 
-    new bootstrap.Modal(document.getElementById('modalRelatorio')).show();
+    document.getElementById('conteudoModal').innerHTML = html;
+
+    let modal = new bootstrap.Modal(document.getElementById('modalRelatorio'));
+    modal.show();
 }
 </script>
 
 </body>
 </html>
-
