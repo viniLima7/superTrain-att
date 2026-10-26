@@ -1,78 +1,140 @@
 <?php
+require_once 'proteger.php';
+require_once 'config.php';
+
 if (session_status() !== PHP_SESSION_ACTIVE) {
-    session_start();
+  session_start();
 }
 
-if (!isset($_SESSION['usuario_id'])) {
-    header('Location: login.php');
-    exit;
+// Excluir rota
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['excluir_id'])) {
+  $id = (int) $_POST['excluir_id'];
+
+  if ($id > 0) {
+    $stmt = $conexao->prepare(
+      'DELETE FROM rotas WHERE id = ?'
+    );
+
+    $stmt->bind_param('i', $id);
+
+    if ($stmt->execute()) {
+      $_SESSION['mensagem'] = $stmt->affected_rows > 0
+        ? 'Rota excluída com sucesso!'
+        : 'A rota não foi encontrada.';
+    } else {
+      $_SESSION['mensagem'] = 'Não foi possível excluir a rota.';
+    }
+
+    $stmt->close();
+  }
+
+  header('Location: rotas.php');
+  exit;
+}
+
+// Mensagem de retorno
+$mensagem = $_SESSION['mensagem'] ?? '';
+unset($_SESSION['mensagem']);
+
+// Consultar as rotas cadastradas
+$resultado = $conexao->query(
+  'SELECT id, direcao, horario_partida, tipo_composicao
+     FROM rotas
+     ORDER BY id DESC'
+);
+
+if (!$resultado) {
+  die('Erro ao consultar as rotas. Verifique a estrutura da tabela rotas.');
 }
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Rotas - SuperTrain</title>
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
-  <link rel="stylesheet" href="estilo/rotas.css" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet">
+
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <link rel="stylesheet" href="estilo/rotas.css?v=1.0">
 </head>
 
 <body>
 
   <header>
-    <!-- NAV -->
     <nav class="navbar navbar-expand-lg bg-blur">
       <div class="container-fluid">
+
         <a class="navbar-brand" href="dashboard.php">
-          <img src="imagens/logo.png" alt="SuperTrain Logo" width="36" height="28" />
+          <img src="imagens/logo.png"
+            alt="SuperTrain Logo"
+            width="36"
+            height="28">
           SuperTrain
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSuperTrain"
-          aria-controls="navbarSuperTrain" aria-expanded="false" aria-label="Toggle navigation">
+
+        <button class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSuperTrain"
+          aria-controls="navbarSuperTrain"
+          aria-expanded="false"
+          aria-label="Abrir menu">
+
           <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSuperTrain">
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+
             <li class="nav-item">
               <a class="nav-link" href="dashboard.php">
                 <i class="bi bi-grid-fill"></i> Dashboard
               </a>
             </li>
+
             <li class="nav-item">
               <a class="nav-link" href="trens.php">
                 <i class="bi bi-train-front"></i> Trens
               </a>
             </li>
+
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="rotas.php">
                 <i class="bi bi-signpost-split"></i> Rotas
               </a>
             </li>
+
             <li class="nav-item">
               <a class="nav-link" href="sensores.php">
                 <i class="bi bi-broadcast-pin"></i> Sensores
               </a>
             </li>
+
             <li class="nav-item">
               <a class="nav-link" href="relatorios.php">
                 <i class="bi bi-file-earmark-bar-graph"></i> Relatórios
               </a>
             </li>
+
             <li class="nav-item">
               <a class="nav-link" href="perfil.php">
                 <i class="bi bi-person-circle"></i> Perfil
               </a>
             </li>
+
             <li class="nav-item">
               <a class="nav-link text-danger" href="sair.php">
                 <i class="bi bi-box-arrow-right"></i> Sair
               </a>
             </li>
+
           </ul>
         </div>
       </div>
@@ -80,78 +142,141 @@ if (!isset($_SESSION['usuario_id'])) {
   </header>
 
   <main>
-    <div class="container rotas-wrapper">
-      <h2 class="texto-indicativo">Configuração e Registro de Rotas</h2>
+    <div class="container trens-container">
 
-      <div class="card rotas-card">
-        <h1 class="card-title">Nova Rota</h1>
+      <div class="header-actions mb-2">
+        <a href="formulario_rotas.php" class="btn btn-primary">
+          <i class="bi bi-plus-lg"></i>
+          <span>Adicionar Rota</span>
+        </a>
+      </div>
 
-        <form>
-          <div class="form-group mb-3">
-            <label for="selectLinha" class="form-label">Direção da Linha</label>
-            <select id="selectLinha" name="linha" class="form-select">
-              <option value="norte/sul">Norte → Sul</option>
-              <option value="norte/leste">Norte → Leste</option>
-              <option value="norte/oeste">Norte → Oeste</option>
-              <option value="sul/norte">Sul → Norte</option>
-              <option value="sul/leste">Sul → Leste</option>
-              <option value="sul/oeste">Sul → Oeste</option>
-              <option value="leste/norte">Leste → Norte</option>
-              <option value="leste/sul">Leste → Sul</option>
-              <option value="leste/oeste">Leste → Oeste</option>
-              <option value="oeste/norte">Oeste → Norte</option>
-              <option value="oeste/sul">Oeste → Sul</option>
-              <option value="oeste/leste">Oeste → Leste</option>
-            </select>
+      <div class="card card-bg-blur trens-card">
+
+        <div class="card-header-custom">
+          <h1 class="card-title">Rotas cadastradas</h1>
+        </div>
+
+        <?php if ($mensagem !== ''): ?>
+          <p class="aviso">
+            <?= htmlspecialchars($mensagem) ?>
+          </p>
+        <?php endif; ?>
+
+        <?php if ($resultado->num_rows === 0): ?>
+
+          <div class="empty-fleet-state">
+            <i class="bi bi-signpost-split empty-icon"></i>
+
+            <p class="empty-text">
+              Nenhuma rota cadastrada no momento.
+            </p>
+
+            <a href="formulario_rotas.php"
+              class="btn btn-primary btn-adicionar-trem">
+
+              <i class="bi bi-plus-lg"></i>
+              <span>Cadastrar primeira rota</span>
+            </a>
           </div>
 
-          <div class="form-group mb-3">
-            <label for="selectPartida" class="form-label">Horário Previsto de Partida</label>
-            <select id="selectPartida" name="horarioPartida" class="form-select">
-              <option value="05:30">05:30</option>
-              <option value="06:00">06:00</option>
-              <option value="06:30" selected>06:30</option>
-              <option value="07:00">07:00</option>
-              <option value="07:30">07:30</option>
-              <option value="08:00">08:00</option>
-              <option value="09:30">09:30</option>
-              <option value="11:00">11:00</option>
-              <option value="12:00">12:00</option>
-              <option value="12:30">12:30</option>
-              <option value="13:00">13:00</option>
-              <option value="13:30">13:30</option>
-              <option value="15:00">15:00</option>
-              <option value="16:30">16:30</option>
-              <option value="17:30">17:30</option>
-              <option value="18:00">18:00</option>
-              <option value="18:30">18:30</option>
-              <option value="19:00">19:00</option>
-              <option value="19:30">19:30</option>
-              <option value="20:30">20:30</option>
-              <option value="21:30">21:30</option>
-              <option value="22:30">22:30</option>
-              <option value="23:30">23:30</option>
-            </select>
+        <?php else: ?>
+
+          <div class="table-responsive">
+            <table class="table text-center mb-0">
+
+              <thead>
+                <tr>
+                  <th scope="col">Linha</th>
+                  <th scope="col">Horário de Partida</th>
+                  <th scope="col">Composição</th>
+                  <th scope="col">Ações</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <?php while ($rota = $resultado->fetch_assoc()): ?>
+
+                  <tr class="train-row">
+
+                    <td>
+                      <?= htmlspecialchars($rota['direcao']) ?>
+                    </td>
+
+                    <td>
+                      <?= htmlspecialchars(
+                        substr((string) $rota['horario_partida'], 0, 5)
+                      ) ?>
+                    </td>
+
+                    <td>
+                      <?php
+                      $nomes_composicao = [
+                        'passageiro' => 'Passageiro',
+                        'carga' => 'Carga Comercial',
+                        'expresso' => 'Expresso Direto'
+                      ];
+
+                      $tipo = $rota['tipo_composicao'] ?? '';
+
+                      echo htmlspecialchars(
+                        $nomes_composicao[$tipo] ?? $tipo
+                      );
+                      ?>
+                    </td>
+
+                    <td>
+                      <div class="train-actions d-flex justify-content-center gap-2">
+
+                        <a
+                          class="btn btn-sm btn-outline-secondary"
+                          title="Editar rota"
+                          href="formulario_rotas.php?id=<?= (int) $rota['id'] ?>">
+
+                          <i class="bi bi-pencil"></i>
+                          Editar
+                        </a>
+
+                        <form
+                          method="post"
+                          action="rotas.php"
+                          onsubmit="return confirm('Confirma a exclusão desta rota?');">
+
+                          <input
+                            type="hidden"
+                            name="excluir_id"
+                            value="<?= (int) $rota['id'] ?>">
+
+                          <button
+                            type="submit"
+                            class="btn btn-sm btn-outline-danger"
+                            title="Excluir rota">
+
+                            <i class="bi bi-trash"></i>
+                            Excluir
+                          </button>
+
+                        </form>
+
+                      </div>
+                    </td>
+
+                  </tr>
+
+                <?php endwhile; ?>
+              </tbody>
+
+            </table>
           </div>
 
-          <div class="form-group mb-4">
-            <label for="selectTipo" class="form-label">Tipo de Composição</label>
-            <select id="selectTipo" name="tipoTrem" class="form-select">
-              <option value="passageiro" selected>Passageiro</option>
-              <option value="carga">Carga Comercial</option>
-              <option value="expresso">Expresso Direto</option>
-            </select>
-          </div>
+        <?php endif; ?>
 
-          <button type="submit" class="btn w-100 btn-cadastro">
-            <i class="bi bi-check2-circle"></i> Salvar Rota
-          </button>
-        </form>
       </div>
     </div>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 
 </html>
