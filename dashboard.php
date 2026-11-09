@@ -37,6 +37,12 @@
               </a>
             </li>
             <li class="nav-item">
+              <a class="nav-link" href="usuarios.php">
+                <i class="bi bi-people-fill"></i> usuários
+              </a>
+            </li>
+
+            <li class="nav-item">
               <a class="nav-link" href="trens.php">
                 <i class="bi bi-train-front"></i> Trens
               </a>
@@ -51,6 +57,13 @@
                 <i class="bi bi-broadcast-pin"></i> Sensores
               </a>
             </li>
+            <?php if ($_SESSION['nivel_acesso'] === 'admin'): ?>
+              <li class="nav-item">
+                <a class="nav-link" href="relatorios.php">
+                  <i class="bi bi-file-earmark-bar-graph"></i> Relatórios
+                </a>
+              </li>
+              <?php endif; ?>
             <li class="nav-item">
               <a class="nav-link" href="relatorios.php">
                 <i class="bi bi-file-earmark-bar-graph"></i> Relatórios

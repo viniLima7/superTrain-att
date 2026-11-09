@@ -69,6 +69,14 @@ $resultado = $conexao->query('SELECT * FROM trens ORDER BY prefixo');
                 <i class="bi bi-grid-fill"></i> Dashboard
               </a>
             </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="usuarios.php">
+                <i class="bi bi-people-fill"></i> usuários
+              </a>
+            </li>
+
+
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="trens.php">
                 <i class="bi bi-train-front"></i> Trens

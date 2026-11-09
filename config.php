@@ -3,7 +3,6 @@ $servidor = 'localhost';
 $usuario = 'root';
 $senha = '';
 $banco = 'supertrain_db';
-
 $conexao = new mysqli($servidor, $usuario, $senha, $banco);
 
 if ($conexao-> connect_error) {

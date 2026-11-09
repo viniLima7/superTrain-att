@@ -60,3 +60,8 @@
     color: var(--cor-texto-sutil);
     margin-top: 0.35rem;
 }
+
+.aviso {
+    text-align: center;
+    margin: 10px 0;
+}
