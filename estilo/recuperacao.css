@@ -90,3 +90,200 @@
     color: #ffffff;
     transform: translateX(-3px);
 }
+
+/* --- ALERTAS & FEEDBACK --- */
+.aviso {
+    border-radius: var(--raio-md);
+    padding: 0.9rem 1.15rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.88rem;
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    line-height: 1.5;
+}
+
+.aviso i {
+    font-size: 1.15rem;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+}
+
+.aviso > div {
+    flex: 1;
+    min-width: 0;
+}
+
+.aviso-erro {
+    background: rgba(244, 63, 94, 0.12);
+    border: 1px solid rgba(244, 63, 94, 0.35);
+    border-left: 4px solid var(--status-parado);
+    color: #fca5a5;
+}
+
+.aviso-sucesso {
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    border-left: 4px solid var(--status-ativo);
+    color: #6ee7b7;
+}
+
+.aviso-info {
+    background: rgba(59, 130, 246, 0.12);
+    border: 1px solid rgba(59, 130, 246, 0.35);
+    border-left: 4px solid var(--cor-azul-primario);
+    color: #93c5fd;
+}
+
+/* --- BLOCO MODO LOCAL (XAMPP / AMBIENTE DE TESTE) --- */
+.modo-local-card {
+    margin-top: 0.85rem;
+    padding: 0.95rem 1.1rem;
+    background: rgba(13, 20, 36, 0.75);
+    border: 1px solid rgba(59, 130, 246, 0.22);
+    border-radius: var(--raio-md);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+}
+
+.modo-local-header {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #93c5fd;
+}
+
+.modo-local-header i {
+    font-size: 0.95rem;
+    color: var(--cor-azul-light);
+    margin-top: 0;
+}
+
+.modo-local-desc {
+    font-size: 0.82rem;
+    color: var(--cor-texto-secundario);
+    line-height: 1.45;
+    margin: 0;
+}
+
+.btn-modo-local {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    margin-top: 0.25rem;
+    padding: 0.65rem 1.2rem;
+    font-family: var(--font-body);
+    font-size: 0.84rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: #ffffff;
+    background: rgba(30, 58, 138, 0.35);
+    border: 1px solid rgba(96, 165, 250, 0.32);
+    border-radius: var(--raio-md);
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: all var(--transicao-media);
+}
+
+.btn-modo-local i {
+    font-size: 0.9rem;
+    color: inherit;
+    margin-top: 0;
+    transition: transform var(--transicao-rapida);
+}
+
+.btn-modo-local:hover {
+    background: var(--gradiente-primario-hover);
+    border-color: rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(37, 99, 235, 0.4);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.btn-modo-local:hover i {
+    transform: translateX(2px);
+}
+
+.btn-modo-local:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.35);
+}
+
+.link-destaque {
+    color: #60a5fa;
+    text-decoration: underline;
+    font-weight: 600;
+    word-break: break-all;
+}
+
+.link-destaque:hover {
+    color: #ffffff;
+}
+
+/* --- CAMPOS DE SENHA & TOGGLE --- */
+.input-password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-password-wrapper .form-control {
+    padding-right: 2.75rem !important;
+}
+
+.btn-toggle-senha {
+    position: absolute;
+    right: 0.75rem;
+    background: transparent;
+    border: none;
+    color: var(--cor-texto-mutado);
+    cursor: pointer;
+    padding: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+    transition: color var(--transicao-rapida);
+    z-index: 4;
+}
+
+.btn-toggle-senha:hover {
+    color: #ffffff;
+}
+
+.btn-toggle-senha:focus {
+    outline: none;
+    color: var(--cor-azul-light);
+}
+
+.senha-feedback {
+    font-size: 0.8rem;
+    margin-top: 0.4rem;
+    min-height: 1.2rem;
+    transition: all var(--transicao-rapida);
+}
+
+.senha-feedback.valido {
+    color: #6ee7b7;
+}
+
+.senha-feedback.invalido {
+    color: #fca5a5;
+}
+
+.senha-dica {
+    font-size: 0.78rem;
+    color: var(--cor-texto-sutil);
+    margin-top: 0.35rem;
+}

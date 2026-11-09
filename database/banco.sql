@@ -63,6 +63,7 @@ CREATE TABLE `usuarios` (
     `email` VARCHAR(150) NOT NULL UNIQUE,
     `nome_usuario` VARCHAR(50) NOT NULL UNIQUE,
     `senha_hash` VARCHAR(255) NOT NULL,
+    `cargo` enum('gestor','operador', 'cliente') DEFAULT 'cliente',
     `pais_id` INT NOT NULL,
     `status_conta` ENUM('ativo', 'inativo', 'bloqueado', 'pendente') NOT NULL DEFAULT 'ativo',
     `ultimo_login` DATETIME NULL,
@@ -77,19 +78,18 @@ INSERT INTO `usuarios` (`id`, `email`, `nome_usuario`, `senha_hash`, `pais_id`, 
 (3, 'vinicius.l@supertrain.com', 'vinicius.lima', '$2y$12$eN98Wk0R57yqI2mQo3v1te6hSkmWf67J51J0X6wJkeM5G9i7Qx2gW', 1, 'ativo', '2026-02-01 09:30:00');
 
 -- -----------------------------------------------------------------------------
--- 4. TABELA: recuperacoes_senha (recuperacao.html)
+-- 4. TABELA: recuperacao_senha (recuperacao.php, redefinir_senha.php)
 -- -----------------------------------------------------------------------------
-DROP TABLE IF EXISTS `recuperacoes_senha`;
-CREATE TABLE `recuperacoes_senha` (
+DROP TABLE IF EXISTS `recuperacao_senha`;
+CREATE TABLE `recuperacao_senha` (
     `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `usuario_id` INT NOT NULL,
-    `token_hash` CHAR(64) NOT NULL UNIQUE,
+    `email` VARCHAR(150) NOT NULL,
+    `token` VARCHAR(64) NOT NULL UNIQUE,
     `data_expiracao` DATETIME NOT NULL,
-    `utilizado` BOOLEAN NOT NULL DEFAULT FALSE,
-    `ip_solicitacao` VARCHAR(45) NULL,
     `criado_em` DATETIME DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT `fk_recuperacoes_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios`(`id`) ON DELETE CASCADE,
-    INDEX `idx_recuperacoes_token` (`token_hash`, `data_expiracao`, `utilizado`)
+    INDEX `idx_recuperacao_token` (`token`),
+    INDEX `idx_recuperacao_email` (`email`),
+    CONSTRAINT `fk_recuperacao_usuario_email` FOREIGN KEY (`email`) REFERENCES `usuarios`(`email`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- -----------------------------------------------------------------------------
