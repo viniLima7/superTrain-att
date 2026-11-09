@@ -153,7 +153,7 @@ $resultado = $conexao->query('SELECT * FROM trens ORDER BY prefixo');
                 <tr>
                   <th scope="col">Linha</th>
                   <th scope="col">Modelo</th>
-                  <th scope="col">Capacidade</th>
+                  <th scope="col">Capacidade (T)</th>
                   <th scope="col">Status</th>
                 </tr>
               </thead>
