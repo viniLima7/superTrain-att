@@ -2,11 +2,11 @@
 require 'proteger.php';
 require 'config.php';
 
- if (session_status() !== PHP_SESSION_ACTIVE) {
-    session_start();
- };
+if (session_status() !== PHP_SESSION_ACTIVE) {
+  session_start();
+};
 
- $cargo = $_SESSION['usuario_cargo'];
+$cargo = $_SESSION['usuario_cargo'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['excluir_id'])) {
   $id = (int) $_POST['excluir_id'];
@@ -54,7 +54,7 @@ $resultado = $conexao->query('SELECT * FROM trens ORDER BY prefixo');
 </head>
 
 <body>
-    <header>
+  <header>
 
     <nav class="navbar navbar-expand-lg bg-blur">
       <div class="container-fluid">
@@ -74,12 +74,12 @@ $resultado = $conexao->query('SELECT * FROM trens ORDER BY prefixo');
                 <i class="bi bi-grid-fill"></i> Dashboard
               </a>
             </li>
-            <?php if($cargo != 'cliente'): ?>
-            <li class="nav-item">
-              <a class="nav-link" href="usuarios.php">
-                <i class="bi bi-people-fill"></i> usuários
-              </a>
-            </li>
+            <?php if ($cargo != 'cliente'): ?>
+              <li class="nav-item">
+                <a class="nav-link" href="usuarios.php">
+                  <i class="bi bi-people-fill"></i> usuários
+                </a>
+              </li>
             <?php endif; ?>
 
             <li class="nav-item">
@@ -93,21 +93,21 @@ $resultado = $conexao->query('SELECT * FROM trens ORDER BY prefixo');
               </a>
             </li>
 
-            <?php if($cargo != 'cliente'): ?>
-            <li class="nav-item">
-              <a class="nav-link" href="sensores.php">
-                <i class="bi bi-broadcast-pin"></i> Sensores
-              </a>
-            </li>
+            <?php if ($cargo != 'cliente'): ?>
+              <li class="nav-item">
+                <a class="nav-link" href="sensores.php">
+                  <i class="bi bi-broadcast-pin"></i> Sensores
+                </a>
+              </li>
             <?php endif; ?>
 
-            <?php if($cargo != 'cliente'): ?>
+            <?php if ($cargo != 'cliente'): ?>
               <li class="nav-item">
                 <a class="nav-link" href="relatorios.php">
                   <i class="bi bi-file-earmark-bar-graph"></i> Relatórios
                 </a>
               </li>
-              <?php endif; ?>
+            <?php endif; ?>
             <li class="nav-item">
               <a class="nav-link" href="perfil.php">
                 <i class="bi bi-person-circle"></i> Perfil
@@ -126,14 +126,14 @@ $resultado = $conexao->query('SELECT * FROM trens ORDER BY prefixo');
 
   <main>
     <div class="container trens-container">
-        <div class="header-actions mb-2">
-          <?php if($cargo != 'cliente') : ?>
-            <a href="formulario.php?id=0" class="btn btn-primary">
-              <i class="bi bi-plus-lg"></i>
-              <span>Adicionar Trem</span>
-            </a>
-          <?php endif; ?>
-          </div>
+      <div class="header-actions mb-2">
+        <?php if ($cargo != 'cliente') : ?>
+          <a href="formulario.php?id=0" class="btn btn-primary">
+            <i class="bi bi-plus-lg"></i>
+            <span>Adicionar Trem</span>
+          </a>
+        <?php endif; ?>
+      </div>
       <div class="card card-bg-blur trens-card">
         <div class="card-header-custom">
           <h1 class="card-title">Frota de Trens</h1>
@@ -191,16 +191,16 @@ $resultado = $conexao->query('SELECT * FROM trens ORDER BY prefixo');
                     <td><?= number_format((float) $linha['capacidade_maxima'], 2, ',', '.') ?></td>
                     <td>
                       <span class="status-<?= [
-                        'ativo' => 'ativo',
-                        'manutencao' => 'atencao',
-                        'parado' => 'parado'
-                      ][$linha['status_operacional']] ?? 'desconhecido';?>">
+                                            'ativo' => 'ativo',
+                                            'manutencao' => 'atencao',
+                                            'parado' => 'parado'
+                                          ][$linha['status_operacional']] ?? 'desconhecido'; ?>">
 
                         <span class="status-dot"></span> <?= [
-                          'ativo' => 'Ativo',
-                          'manutencao' => 'Manutenção',
-                          'parado' => 'Parado'
-                        ][$linha['status_operacional']] ?? 'desconhecido';?>
+                                                            'ativo' => 'Ativo',
+                                                            'manutencao' => 'Manutenção',
+                                                            'parado' => 'Parado'
+                                                          ][$linha['status_operacional']] ?? 'desconhecido'; ?>
                       </span>
                     </td>
                   </tr>
@@ -224,33 +224,33 @@ $resultado = $conexao->query('SELECT * FROM trens ORDER BY prefixo');
                               <div class="detail-label justify-content-center">
                                 <i class="bi bi-speedometer2"></i> Velocidade Atual
                               </div>
-                              <?php if($linha['status_operacional'] == 'ativo') {
+                              <?php if ($linha['status_operacional'] == 'ativo') {
                                 $velocidade  = rand(0, 9000) / 100;
-                              }else {
+                              } else {
                                 $velocidade  = 0;
                               } ?>
                               <div class="speed-number"><?= $velocidade ?></div>
                               <div class="speed-unit">KM / H</div>
                             </div>
 
-                            <?php if($cargo != 'cliente'): ?>
-                            <div class="train-actions">
-                              <a class="btn btn-sm btn-outline-secondary" title="Editar informações do trem" href="formulario.php?id=<?= (int) $linha['id'] ?>">
-                                <i class="bi bi-pencil"></i> Editar
-                              </a>
+                            <?php if ($cargo != 'cliente'): ?>
+                              <div class="train-actions">
+                                <a class="btn btn-sm btn-outline-secondary" title="Editar informações do trem" href="formulario.php?id=<?= (int) $linha['id'] ?>">
+                                  <i class="bi bi-pencil"></i> Editar
+                                </a>
 
-                              <form method="post" onsubmit="return confirm('Confirma a exclusão do trem?');">
+                                <form method="post" onsubmit="return confirm('Confirma a exclusão do trem?');">
 
-                                <input type="hidden" name="excluir_id" value="<?= (int) $linha['id'] ?>">
+                                  <input type="hidden" name="excluir_id" value="<?= (int) $linha['id'] ?>">
 
-                                <button class="btn btn-sm btn-outline-danger" title="Excluir trem">
-                                  <i class="bi bi-trash"></i> Excluir
-                                </button>
+                                  <button class="btn btn-sm btn-outline-danger" title="Excluir trem">
+                                    <i class="bi bi-trash"></i> Excluir
+                                  </button>
 
-                              </form>
+                                </form>
 
 
-                            </div>
+                              </div>
                             <?php endif; ?>
                           </div>
                         </div>

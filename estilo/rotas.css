@@ -5,6 +5,21 @@
 
 @import "global.css";
 
+.trens-container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding-bottom: 4rem;
+}
+
+.trens-card {
+    padding: 1.75rem 2rem;
+}
+
+.header-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
 .rotas-wrapper {
     max-width: 600px;
     margin: 1.5rem auto 4rem auto;
