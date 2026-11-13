@@ -85,7 +85,7 @@ if (!$resultado) {
         <div class="collapse navbar-collapse" id="navbarSuperTrain">
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="dashboard.php">
+              <a class="nav-link" aria-current="page" href="dashboard.php">
                 <i class="bi bi-grid-fill"></i> Dashboard
               </a>
             </li>
@@ -103,7 +103,7 @@ if (!$resultado) {
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="rotas.php">
+              <a class="nav-link active" href="rotas.php">
                 <i class="bi bi-signpost-split"></i> Rotas
               </a>
             </li>
@@ -142,17 +142,19 @@ if (!$resultado) {
   <main>
     <div class="container trens-container">
 
+    <?php if($cargo != 'cliente'): ?>
       <div class="header-actions mb-2">
         <a href="formulario_rotas.php" class="btn btn-primary">
           <i class="bi bi-plus-lg"></i>
           <span>Adicionar Rota</span>
         </a>
       </div>
+      <?php endif; ?>
 
       <div class="card card-bg-blur trens-card">
 
         <div class="card-header-custom">
-          <h1 class="card-title">Rotas cadastradas</h1>
+          <h1 class="card-title p-4">Rotas cadastradas</h1>
         </div>
 
         <?php if ($mensagem !== ''): ?>
@@ -188,7 +190,9 @@ if (!$resultado) {
                   <th scope="col">Linha</th>
                   <th scope="col">Horário de Partida</th>
                   <th scope="col">Composição</th>
+                  <?php if($cargo != 'cliente'): ?>
                   <th scope="col">Ações</th>
+                  <?php endif; ?>
                 </tr>
               </thead>
 
@@ -223,6 +227,7 @@ if (!$resultado) {
                       ?>
                     </td>
 
+                    <?php if($cargo != 'cliente'): ?>
                     <td>
                       <div class="train-actions d-flex justify-content-center gap-2">
 
@@ -258,6 +263,7 @@ if (!$resultado) {
 
                       </div>
                     </td>
+                    <?php endif; ?>
 
                   </tr>
 

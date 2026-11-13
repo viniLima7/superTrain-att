@@ -70,7 +70,7 @@ $resultado = $conexao->query('SELECT * FROM trens ORDER BY prefixo');
         <div class="collapse navbar-collapse" id="navbarSuperTrain">
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="dashboard.php">
+              <a class="nav-link" aria-current="page" href="dashboard.php">
                 <i class="bi bi-grid-fill"></i> Dashboard
               </a>
             </li>
@@ -83,7 +83,7 @@ $resultado = $conexao->query('SELECT * FROM trens ORDER BY prefixo');
             <?php endif; ?>
 
             <li class="nav-item">
-              <a class="nav-link" href="trens.php">
+              <a class="nav-link active" href="trens.php">
                 <i class="bi bi-train-front"></i> Trens
               </a>
             </li>
