@@ -6,6 +6,8 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
   session_start();
 }
 
+$cargo = $_SESSION['usuario_cargo'];
+
 // Excluir rota
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['excluir_id'])) {
   $id = (int) $_POST['excluir_id'];
@@ -67,80 +69,70 @@ if (!$resultado) {
 
 <body>
 
-  <header>
+    <header>
+
     <nav class="navbar navbar-expand-lg bg-blur">
       <div class="container-fluid">
-
         <a class="navbar-brand" href="dashboard.php">
-          <img src="imagens/logo.png"
-            alt="SuperTrain Logo"
-            width="36"
-            height="28">
+          <img src="imagens/logo.png" alt="SuperTrain Logo" width="36" height="28" />
           SuperTrain
         </a>
-
-        <button class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSuperTrain"
-          aria-controls="navbarSuperTrain"
-          aria-expanded="false"
-          aria-label="Abrir menu">
-
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSuperTrain"
+          aria-controls="navbarSuperTrain" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSuperTrain">
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-
             <li class="nav-item">
-              <a class="nav-link" href="dashboard.php">
+              <a class="nav-link active" aria-current="page" href="dashboard.php">
                 <i class="bi bi-grid-fill"></i> Dashboard
               </a>
             </li>
-
+            <?php if($cargo != 'cliente'): ?>
             <li class="nav-item">
               <a class="nav-link" href="usuarios.php">
                 <i class="bi bi-people-fill"></i> usuários
               </a>
             </li>
+            <?php endif; ?>
 
             <li class="nav-item">
               <a class="nav-link" href="trens.php">
                 <i class="bi bi-train-front"></i> Trens
               </a>
             </li>
-
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="rotas.php">
+              <a class="nav-link" href="rotas.php">
                 <i class="bi bi-signpost-split"></i> Rotas
               </a>
             </li>
 
+            <?php if($cargo != 'cliente'): ?>
             <li class="nav-item">
               <a class="nav-link" href="sensores.php">
                 <i class="bi bi-broadcast-pin"></i> Sensores
               </a>
             </li>
+            <?php endif; ?>
 
-            <li class="nav-item">
-              <a class="nav-link" href="relatorios.php">
-                <i class="bi bi-file-earmark-bar-graph"></i> Relatórios
-              </a>
-            </li>
-
+            <?php if($cargo != 'cliente'): ?>
+              <li class="nav-item">
+                <a class="nav-link" href="relatorios.php">
+                  <i class="bi bi-file-earmark-bar-graph"></i> Relatórios
+                </a>
+              </li>
+              <?php endif; ?>
             <li class="nav-item">
               <a class="nav-link" href="perfil.php">
                 <i class="bi bi-person-circle"></i> Perfil
               </a>
             </li>
-
             <li class="nav-item">
-              <a class="nav-link text-danger" href="sair.php">
+              <a class="nav-link text-danger" onclick="return confirm('Tem certeza que deseja sair?');" href="sair.php">
                 <i class="bi bi-box-arrow-right"></i> Sair
               </a>
             </li>
-
           </ul>
         </div>
       </div>

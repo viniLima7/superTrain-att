@@ -2,7 +2,13 @@
 require 'proteger.php';
 require 'config.php';
 
+if (session_status() !== PHP_SESSION_ACTIVE) {
+  session_start();
+}
+
 $usuarioId = (int) $_SESSION['usuario_id'];
+
+$cargo = $_SESSION['usuario_cargo'];
 
 // Rótulos para os campos enum da tabela operadores
 $turnos = [
@@ -224,7 +230,7 @@ $preferencia = function (string $campo) use ($perfil): string {
 
 <body>
   <header>
-    <!-- NAV FLUTUANTE -->
+
     <nav class="navbar navbar-expand-lg bg-blur">
       <div class="container-fluid">
         <a class="navbar-brand" href="dashboard.php">
@@ -239,15 +245,17 @@ $preferencia = function (string $campo) use ($perfil): string {
         <div class="collapse navbar-collapse" id="navbarSuperTrain">
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link" href="dashboard.php">
+              <a class="nav-link active" aria-current="page" href="dashboard.php">
                 <i class="bi bi-grid-fill"></i> Dashboard
               </a>
             </li>
+            <?php if($cargo != 'cliente'): ?>
             <li class="nav-item">
               <a class="nav-link" href="usuarios.php">
                 <i class="bi bi-people-fill"></i> usuários
               </a>
             </li>
+            <?php endif; ?>
 
             <li class="nav-item">
               <a class="nav-link" href="trens.php">
@@ -259,23 +267,29 @@ $preferencia = function (string $campo) use ($perfil): string {
                 <i class="bi bi-signpost-split"></i> Rotas
               </a>
             </li>
+
+            <?php if($cargo != 'cliente'): ?>
             <li class="nav-item">
               <a class="nav-link" href="sensores.php">
                 <i class="bi bi-broadcast-pin"></i> Sensores
               </a>
             </li>
+            <?php endif; ?>
+
+            <?php if($cargo != 'cliente'): ?>
+              <li class="nav-item">
+                <a class="nav-link" href="relatorios.php">
+                  <i class="bi bi-file-earmark-bar-graph"></i> Relatórios
+                </a>
+              </li>
+              <?php endif; ?>
             <li class="nav-item">
-              <a class="nav-link" href="relatorios.php">
-                <i class="bi bi-file-earmark-bar-graph"></i> Relatórios
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="perfil.php">
+              <a class="nav-link" href="perfil.php">
                 <i class="bi bi-person-circle"></i> Perfil
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-danger" href="sair.php">
+              <a class="nav-link text-danger" onclick="return confirm('Tem certeza que deseja sair?');" href="sair.php">
                 <i class="bi bi-box-arrow-right"></i> Sair
               </a>
             </li>

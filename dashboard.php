@@ -1,6 +1,13 @@
  <?php
-  require 'proteger.php'
-  ?>
+  require 'config.php';
+  require 'proteger.php';
+
+   if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+ };
+
+ $cargo = $_SESSION['usuario_cargo'];
+?>
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -36,11 +43,13 @@
                 <i class="bi bi-grid-fill"></i> Dashboard
               </a>
             </li>
+            <?php if($cargo != 'cliente'): ?>
             <li class="nav-item">
               <a class="nav-link" href="usuarios.php">
                 <i class="bi bi-people-fill"></i> usuários
               </a>
             </li>
+            <?php endif; ?>
 
             <li class="nav-item">
               <a class="nav-link" href="trens.php">
@@ -52,23 +61,22 @@
                 <i class="bi bi-signpost-split"></i> Rotas
               </a>
             </li>
+
+            <?php if($cargo != 'cliente'): ?>
             <li class="nav-item">
               <a class="nav-link" href="sensores.php">
                 <i class="bi bi-broadcast-pin"></i> Sensores
               </a>
             </li>
-            <?php if ($_SESSION['nivel_acesso'] === 'admin'): ?>
+            <?php endif; ?>
+
+            <?php if($cargo != 'cliente'): ?>
               <li class="nav-item">
                 <a class="nav-link" href="relatorios.php">
                   <i class="bi bi-file-earmark-bar-graph"></i> Relatórios
                 </a>
               </li>
               <?php endif; ?>
-            <li class="nav-item">
-              <a class="nav-link" href="relatorios.php">
-                <i class="bi bi-file-earmark-bar-graph"></i> Relatórios
-              </a>
-            </li>
             <li class="nav-item">
               <a class="nav-link" href="perfil.php">
                 <i class="bi bi-person-circle"></i> Perfil

@@ -19,7 +19,7 @@
     if($email === '' || $senha === '') {
       $erro = 'Preencha o login e a senha.';
     } else {
-      $stmt = $conexao->prepare('SELECT id, email, senha_hash FROM usuarios WHERE email = ? LIMIT 1');
+      $stmt = $conexao->prepare('SELECT id, email, senha_hash, cargo FROM usuarios WHERE email = ? LIMIT 1');
       $stmt->bind_param('s', $email);
       $stmt->execute();
       $usuario = $stmt->get_result()->fetch_assoc();
@@ -29,7 +29,7 @@
         session_regenerate_id(true);
         $_SESSION['usuario_id'] = (int) $usuario['id'];
         $_SESSION['usuario_email'] = $usuario['email'];
-        $_SESSION['nivel_acesso'] = $usuario['nivel_acesso'] ?? 'user';
+        $_SESSION['usuario_cargo'] = $usuario['cargo'] ?? 'cliente';
 
         header('Location: dashboard.php');
         exit;
