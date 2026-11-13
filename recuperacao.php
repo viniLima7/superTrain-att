@@ -5,6 +5,17 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
 
 require_once 'config.php';
 
+// Garante que a tabela recuperacao_senha exista no banco de dados
+$conexao->query("CREATE TABLE IF NOT EXISTS `recuperacao_senha` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `email` VARCHAR(150) NOT NULL,
+    `token` VARCHAR(64) NOT NULL UNIQUE,
+    `data_expiracao` DATETIME NOT NULL,
+    `criado_em` DATETIME DEFAULT CURRENT_TIMESTAMP,
+    INDEX `idx_recuperacao_token` (`token`),
+    INDEX `idx_recuperacao_email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+
 // Se já estiver logado, redireciona ao dashboard
 if (isset($_SESSION['usuario_id'])) {
     header('Location: dashboard.php');
