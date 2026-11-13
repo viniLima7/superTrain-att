@@ -72,10 +72,10 @@ CREATE TABLE `usuarios` (
     CONSTRAINT `fk_usuarios_pais` FOREIGN KEY (`pais_id`) REFERENCES `paises`(`id`) ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO `usuarios` (`id`, `email`, `nome_usuario`, `senha_hash`, `pais_id`, `status_conta`, `criado_em`) VALUES
-(1, 'carlos.silva@supertrain.com', 'carlos.silva', '$2y$12$eN98Wk0R57yqI2mQo3v1te6hSkmWf67J51J0X6wJkeM5G9i7Qx2gW', 1, 'ativo', '2026-01-10 08:00:00'),
-(2, 'gabriel.c@supertrain.com', 'gabriel.custodio', '$2y$12$eN98Wk0R57yqI2mQo3v1te6hSkmWf67J51J0X6wJkeM5G9i7Qx2gW', 1, 'ativo', '2026-02-01 09:30:00'),
-(3, 'vinicius.l@supertrain.com', 'vinicius.lima', '$2y$12$eN98Wk0R57yqI2mQo3v1te6hSkmWf67J51J0X6wJkeM5G9i7Qx2gW', 1, 'ativo', '2026-02-01 09:30:00');
+INSERT INTO `usuarios` (`id`, `email`, `nome_usuario`, `senha_hash`, `pais_id`, `status_conta`, `criado_em`, `cargo`) VALUES
+(1, 'carlos.silva@supertrain.com', 'carlos.silva', '$2y$12$eN98Wk0R57yqI2mQo3v1te6hSkmWf67J51J0X6wJkeM5G9i7Qx2gW', 1, 'ativo', '2026-01-10 08:00:00', 'cliente'),
+(2, 'gabriel.c@supertrain.com', 'gabriel.custodio', '$2y$12$eN98Wk0R57yqI2mQo3v1te6hSkmWf67J51J0X6wJkeM5G9i7Qx2gW', 1, 'ativo', '2026-02-01 09:30:00', 'gestor'),
+(3, 'vinicius.l@supertrain.com', 'vinicius.lima', '$2y$12$eN98Wk0R57yqI2mQo3v1te6hSkmWf67J51J0X6wJkeM5G9i7Qx2gW', 1, 'ativo', '2026-02-01 09:30:00', 'gestor');
 
 -- -----------------------------------------------------------------------------
 -- 4. TABELA: recuperacao_senha (recuperacao.php, redefinir_senha.php)
