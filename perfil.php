@@ -495,7 +495,7 @@ $preferencia = function (string $campo) use ($perfil): string {
               </div>
             </div>
 
-            <!-- CARD DE PREFERÊNCIAS DO SISTEMA -->
+            
             <div class="card card-bg-blur perfil-card mt-4">
               <h2 class="card-section-title">
                 <i class="bi bi-sliders"></i> Preferências do Sistema & Alertas CCO
