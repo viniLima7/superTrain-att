@@ -64,16 +64,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['salvar_perfil'])) {
   $nomeCompleto = trim($_POST['nome_completo'] ?? '');
   $email        = trim($_POST['email'] ?? '');
   $telefone     = trim($_POST['telefone_ramal'] ?? '');
-  $cargoFuncao  = trim($_POST['cargo_funcao'] ?? '');
-  $linhaId      = ($_POST['linha_principal_id'] ?? '') === 'geral' || ($_POST['linha_principal_id'] ?? '') === ''
-    ? null
-    : (int) $_POST['linha_principal_id'];
-  $turno        = array_key_exists($_POST['turno_trabalho'] ?? '', $turnos) ? $_POST['turno_trabalho'] : 'diurno1';
 
-  $twoFa          = isset($_POST['autenticacao_2fa']) ? 1 : 0;
-  $alertaSonoro   = isset($_POST['alerta_sonoro_emergencia']) ? 1 : 0;
+  if ($cargo != 'cliente') {
+    $cargoFuncao = trim($_POST['cargo_funcao'] ?? '');
+    $linhaId     = ($_POST['linha_principal_id'] ?? '') === 'geral' || ($_POST['linha_principal_id'] ?? '') === ''
+      ? null
+      : (int) $_POST['linha_principal_id'];
+    $turno       = array_key_exists($_POST['turno_trabalho'] ?? '', $turnos) ? $_POST['turno_trabalho'] : 'diurno1';
+  } else {
+    // Cliente não vê esses campos no formulário: mantém os valores já gravados
+    $cargoFuncao = $perfil['cargo_funcao'] ?? '';
+    $linhaId     = $perfil['linha_principal_id'] !== null ? (int) $perfil['linha_principal_id'] : null;
+    $turno       = $perfil['turno_trabalho'] ?? 'diurno1';
+  }
+
+  $twoFa           = isset($_POST['autenticacao_2fa']) ? 1 : 0;
+  $alertaSonoro    = isset($_POST['alerta_sonoro_emergencia']) ? 1 : 0;
   $notifTelemetria = isset($_POST['notificacao_telemetria']) ? 1 : 0;
-  $relatorioAuto  = isset($_POST['relatorio_auto_fechamento']) ? 1 : 0;
+  $relatorioAuto   = isset($_POST['relatorio_auto_fechamento']) ? 1 : 0;
 
   $senhaAtual     = $_POST['senha_atual'] ?? '';
   $novaSenha      = $_POST['nova_senha'] ?? '';
@@ -95,8 +103,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['salvar_perfil'])) {
     $stmt->close();
   }
 
-  // Troca de senha (somente se algum campo de senha foi preenchido)
-  $alterarSenha = $senhaAtual !== '' || $novaSenha !== '' || $confirmarSenha !== '';
+  // Troca de senha: só ocorre se o usuário preencher a nova senha (ou a confirmação).
+  // A senha atual sozinha é ignorada, pois o navegador pode preenchê-la automaticamente.
+  $alterarSenha = $novaSenha !== '' || $confirmarSenha !== '';
   if ($alterarSenha) {
     if (!password_verify($senhaAtual, $perfil['senha_hash'])) {
       $erros[] = 'A senha atual está incorreta.';
@@ -249,12 +258,12 @@ $preferencia = function (string $campo) use ($perfil): string {
                 <i class="bi bi-grid-fill"></i> Dashboard
               </a>
             </li>
-            <?php if($cargo != 'cliente'): ?>
-            <li class="nav-item">
-              <a class="nav-link" href="usuarios.php">
-                <i class="bi bi-people-fill"></i> usuários
-              </a>
-            </li>
+            <?php if ($cargo != 'cliente'): ?>
+              <li class="nav-item">
+                <a class="nav-link" href="usuarios.php">
+                  <i class="bi bi-people-fill"></i> usuários
+                </a>
+              </li>
             <?php endif; ?>
 
             <li class="nav-item">
@@ -268,21 +277,19 @@ $preferencia = function (string $campo) use ($perfil): string {
               </a>
             </li>
 
-            <?php if($cargo != 'cliente'): ?>
-            <li class="nav-item">
-              <a class="nav-link" href="sensores.php">
-                <i class="bi bi-broadcast-pin"></i> Sensores
-              </a>
-            </li>
-            <?php endif; ?>
-
-            <?php if($cargo != 'cliente'): ?>
+            <?php if ($cargo != 'cliente'): ?>
+              <li class="nav-item">
+                <a class="nav-link" href="sensores.php">
+                  <i class="bi bi-broadcast-pin"></i> Sensores
+                </a>
+              </li>
               <li class="nav-item">
                 <a class="nav-link" href="relatorios.php">
                   <i class="bi bi-file-earmark-bar-graph"></i> Relatórios
                 </a>
               </li>
-              <?php endif; ?>
+            <?php endif; ?>
+
             <li class="nav-item">
               <a class="nav-link active" href="perfil.php">
                 <i class="bi bi-person-circle"></i> Perfil
@@ -300,89 +307,93 @@ $preferencia = function (string $campo) use ($perfil): string {
   </header>
 
   <main>
+
     <div class="container perfil-container">
 
-      <!-- HERO / BANNER DE IDENTIFICAÇÃO DO OPERADOR -->
-      <section class="card card-bg-blur perfil-hero-card">
-        <div class="perfil-hero-content">
-          <div class="perfil-avatar-wrapper">
-            <img src="<?= htmlspecialchars($foto) ?>" alt="Foto do Operador" class="perfil-avatar-img" />
-            <span class="perfil-avatar-badge" title="Operador Conectado"></span>
-          </div>
-
-          <div class="perfil-info">
-            <h1 class="perfil-nome"><?= htmlspecialchars($nomeExibicao) ?></h1>
-            <div class="perfil-cargo">
-              <i class="bi bi-shield-check"></i> <?= htmlspecialchars($cargoExibicao) ?>
-            </div>
-            <div class="perfil-meta-tags">
-              <span class="meta-tag">
-                <i class="bi bi-person-badge"></i> Matrícula: <strong><?= htmlspecialchars($matricula) ?></strong>
-              </span>
-              <span class="meta-tag">
-                <i class="bi bi-geo-alt"></i> Setor: <strong><?= htmlspecialchars($setor) ?></strong>
-              </span>
-              <span class="meta-tag">
-                <i class="bi bi-clock"></i> Turno: <strong><?= htmlspecialchars($turnos[$turnoAtual]['resumo'] ?? '—') ?></strong>
-              </span>
-              <span class="status-ativo">
-                <span class="status-dot" <?= $statusAtual['cor'] ? 'style="background-color: ' . $statusAtual['cor'] . ';"' : '' ?>></span>
-                <?= htmlspecialchars($statusAtual['rotulo']) ?>
-              </span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- GRID PRINCIPAL -->
-      <div class="row g-4">
-
-        <!-- COLUNA ESQUERDA: ESTATÍSTICAS -->
-        <div class="col-lg-4">
-          <!-- CARD DE INDICADORES DO OPERADOR -->
-          <div class="card card-bg-blur perfil-card perfil-stats-card">
-            <div class="perfil-stats-header">
-              <h2 class="card-section-title">
-                <i class="bi bi-speedometer2"></i> Indicadores do Turno
-              </h2>
-              <p class="card-section-subtitle">Métricas acumuladas do mês corrente</p>
+      <?php if ($cargo != 'cliente'): ?>
+        <!-- HERO / BANNER DE IDENTIFICAÇÃO DO OPERADOR -->
+        <section class="card card-bg-blur perfil-hero-card">
+          <div class="perfil-hero-content">
+            <div class="perfil-avatar-wrapper">
+              <img src="<?= htmlspecialchars($foto) ?>" alt="Foto do Operador" class="perfil-avatar-img" />
+              <span class="perfil-avatar-badge" title="Operador Conectado"></span>
             </div>
 
-            <div class="perfil-stats-grid">
-              <div class="stat-item">
-                <span class="stat-item-label">
-                  <i class="bi bi-clock-history text-primary"></i> Horas em Escala
-                </span>
-                <span class="stat-item-value"><?= (int) ($perfil['horas_em_escala_acumuladas'] ?? 0) ?>h</span>
+            <div class="perfil-info">
+              <h1 class="perfil-nome"><?= htmlspecialchars($nomeExibicao) ?></h1>
+              <div class="perfil-cargo">
+                <i class="bi bi-shield-check"></i> <?= htmlspecialchars($cargoExibicao) ?>
               </div>
-
-              <div class="stat-item">
-                <span class="stat-item-label">
-                  <i class="bi bi-train-front text-info"></i> Trens Despachados
+              <div class="perfil-meta-tags">
+                <span class="meta-tag">
+                  <i class="bi bi-person-badge"></i> Matrícula: <strong><?= htmlspecialchars($matricula) ?></strong>
                 </span>
-                <span class="stat-item-value"><?= number_format((int) ($perfil['trens_despachados_acumulados'] ?? 0), 0, ',', '.') ?></span>
-              </div>
-
-              <div class="stat-item">
-                <span class="stat-item-label">
-                  <i class="bi bi-check-circle text-success"></i> Pontualidade das Linhas
+                <span class="meta-tag">
+                  <i class="bi bi-geo-alt"></i> Setor: <strong><?= htmlspecialchars($setor) ?></strong>
                 </span>
-                <span class="stat-item-value text-success">
-                  <?= $perfil['pontualidade_linhas_percentual'] !== null
-                    ? number_format((float) $perfil['pontualidade_linhas_percentual'], 1, '.', '') . '%'
-                    : '—' ?>
+                <span class="meta-tag">
+                  <i class="bi bi-clock"></i> Turno: <strong><?= htmlspecialchars($turnos[$turnoAtual]['resumo'] ?? '—') ?></strong>
                 </span>
-              </div>
-
-              <div class="stat-item">
-                <span class="stat-item-label">
-                  <i class="bi bi-exclamation-triangle text-warning"></i> Alertas Atendidos
+                <span class="status-ativo">
+                  <span class="status-dot" <?= $statusAtual['cor'] ? 'style="background-color: ' . $statusAtual['cor'] . ';"' : '' ?>></span>
+                  <?= htmlspecialchars($statusAtual['rotulo']) ?>
                 </span>
-                <span class="stat-item-value text-warning"><?= (int) ($perfil['alertas_atendidos_acumulados'] ?? 0) ?></span>
               </div>
             </div>
           </div>
-        </div>
+        </section>
+      <?php endif; ?>
+
+      <!-- A row existe sempre; para cliente, o conteúdo fica centralizado -->
+      <div class="row g-4 <?= $cargo == 'cliente' ? 'justify-content-center' : '' ?>">
+
+        <?php if ($cargo != 'cliente'): ?>
+          <div class="col-lg-4">
+            <!-- CARD DE INDICADORES DO OPERADOR -->
+            <div class="card card-bg-blur perfil-card perfil-stats-card">
+              <div class="perfil-stats-header">
+                <h2 class="card-section-title">
+                  <i class="bi bi-speedometer2"></i> Indicadores do Turno
+                </h2>
+                <p class="card-section-subtitle">Métricas acumuladas do mês corrente</p>
+              </div>
+
+              <div class="perfil-stats-grid">
+                <div class="stat-item">
+                  <span class="stat-item-label">
+                    <i class="bi bi-clock-history text-primary"></i> Horas em Escala
+                  </span>
+                  <span class="stat-item-value"><?= (int) ($perfil['horas_em_escala_acumuladas'] ?? 0) ?>h</span>
+                </div>
+
+                <div class="stat-item">
+                  <span class="stat-item-label">
+                    <i class="bi bi-train-front text-info"></i> Trens Despachados
+                  </span>
+                  <span class="stat-item-value"><?= number_format((int) ($perfil['trens_despachados_acumulados'] ?? 0), 0, ',', '.') ?></span>
+                </div>
+
+                <div class="stat-item">
+                  <span class="stat-item-label">
+                    <i class="bi bi-check-circle text-success"></i> Pontualidade das Linhas
+                  </span>
+                  <span class="stat-item-value text-success">
+                    <?= $perfil['pontualidade_linhas_percentual'] !== null
+                      ? number_format((float) $perfil['pontualidade_linhas_percentual'], 1, '.', '') . '%'
+                      : '—' ?>
+                  </span>
+                </div>
+
+                <div class="stat-item">
+                  <span class="stat-item-label">
+                    <i class="bi bi-exclamation-triangle text-warning"></i> Alertas Atendidos
+                  </span>
+                  <span class="stat-item-value text-warning"><?= (int) ($perfil['alertas_atendidos_acumulados'] ?? 0) ?></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        <?php endif; ?>
 
         <!-- COLUNA DIREITA: DADOS CADASTRAIS, SEGURANÇA E PREFERÊNCIAS -->
         <div class="col-lg-8">
@@ -415,53 +426,55 @@ $preferencia = function (string $campo) use ($perfil): string {
 
                 <div class="col-md-6">
                   <div class="form-group mb-3">
-                    <label for="inputRamal" class="form-label">Telefone / Ramal CCO</label>
+                    <label for="inputRamal" class="form-label">Telefone</label>
                     <input type="text" id="inputRamal" name="telefone_ramal" class="form-control"
                       value="<?= htmlspecialchars($perfil['telefone_ramal'] ?? '') ?>" maxlength="60" />
                   </div>
                 </div>
 
-                <div class="col-md-6">
-                  <div class="form-group mb-3">
-                    <label for="inputCargoFuncao" class="form-label">Cargo / Função</label>
-                    <input type="text" id="inputCargoFuncao" name="cargo_funcao" class="form-control"
-                      value="<?= htmlspecialchars($perfil['cargo_funcao'] ?? '') ?>" maxlength="100" />
+                <?php if ($cargo != 'cliente'): ?>
+                  <div class="col-md-6">
+                    <div class="form-group mb-3">
+                      <label for="inputCargoFuncao" class="form-label">Cargo / Função</label>
+                      <input type="text" id="inputCargoFuncao" name="cargo_funcao" class="form-control"
+                        value="<?= htmlspecialchars($perfil['cargo_funcao'] ?? '') ?>" maxlength="100" />
+                    </div>
                   </div>
-                </div>
 
-                <div class="col-md-4">
-                  <div class="form-group mb-3">
-                    <label for="inputMatricula" class="form-label">Matrícula Operacional</label>
-                    <input type="text" id="inputMatricula" class="form-control" value="<?= htmlspecialchars($matricula) ?>" disabled />
+                  <div class="col-md-4">
+                    <div class="form-group mb-3">
+                      <label for="inputMatricula" class="form-label">Matrícula Operacional</label>
+                      <input type="text" id="inputMatricula" class="form-control" value="<?= htmlspecialchars($matricula) ?>" disabled />
+                    </div>
                   </div>
-                </div>
 
-                <div class="col-md-4">
-                  <div class="form-group mb-3">
-                    <label for="selectSetorLinha" class="form-label">Setor / Linha Principal</label>
-                    <select id="selectSetorLinha" name="linha_principal_id" class="form-select">
-                      <?php while ($linha = $linhas->fetch_assoc()): ?>
-                        <option value="<?= (int) $linha['id'] ?>" <?= (int) $linhaAtual === (int) $linha['id'] ? 'selected' : '' ?>>
-                          <?= htmlspecialchars($linha['nome_linha']) ?>
-                        </option>
-                      <?php endwhile; ?>
-                      <option value="geral" <?= $linhaAtual === null ? 'selected' : '' ?>>Controle Geral de Malha</option>
-                    </select>
+                  <div class="col-md-4">
+                    <div class="form-group mb-3">
+                      <label for="selectSetorLinha" class="form-label">Setor / Linha Principal</label>
+                      <select id="selectSetorLinha" name="linha_principal_id" class="form-select">
+                        <?php while ($linha = $linhas->fetch_assoc()): ?>
+                          <option value="<?= (int) $linha['id'] ?>" <?= (int) $linhaAtual === (int) $linha['id'] ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($linha['nome_linha']) ?>
+                          </option>
+                        <?php endwhile; ?>
+                        <option value="geral" <?= $linhaAtual === null ? 'selected' : '' ?>>Controle Geral de Malha</option>
+                      </select>
+                    </div>
                   </div>
-                </div>
 
-                <div class="col-md-4">
-                  <div class="form-group mb-3">
-                    <label for="selectTurnoTrabalho" class="form-label">Turno de Operação</label>
-                    <select id="selectTurnoTrabalho" name="turno_trabalho" class="form-select">
-                      <?php foreach ($turnos as $valor => $turno): ?>
-                        <option value="<?= $valor ?>" <?= $turnoAtual === $valor ? 'selected' : '' ?>>
-                          <?= htmlspecialchars($turno['rotulo']) ?>
-                        </option>
-                      <?php endforeach; ?>
-                    </select>
+                  <div class="col-md-4">
+                    <div class="form-group mb-3">
+                      <label for="selectTurnoTrabalho" class="form-label">Turno de Operação</label>
+                      <select id="selectTurnoTrabalho" name="turno_trabalho" class="form-select">
+                        <?php foreach ($turnos as $valor => $turno): ?>
+                          <option value="<?= $valor ?>" <?= $turnoAtual === $valor ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($turno['rotulo']) ?>
+                          </option>
+                        <?php endforeach; ?>
+                      </select>
+                    </div>
                   </div>
-                </div>
+                <?php endif; ?>
               </div>
             </div>
 
@@ -497,19 +510,9 @@ $preferencia = function (string $campo) use ($perfil): string {
                   </div>
                 </div>
               </div>
-
-              <div class="preference-row mt-2">
-                <div class="preference-info">
-                  <h4>Autenticação em Duas Etapas (2FA)</h4>
-                  <p>Adiciona uma camada extra de verificação ao entrar no sistema</p>
-                </div>
-                <div class="form-check form-switch">
-                  <input class="form-check-input" type="checkbox" id="check2FA" name="autenticacao_2fa" value="1" <?= $preferencia('autenticacao_2fa') ?> />
-                </div>
-              </div>
             </div>
 
-            
+            <!-- PREFERÊNCIAS DO SISTEMA -->
             <div class="card card-bg-blur perfil-card mt-4">
               <h2 class="card-section-title">
                 <i class="bi bi-sliders"></i> Preferências do Sistema & Alertas CCO

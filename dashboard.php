@@ -222,9 +222,9 @@ $resultado = $conexao->query("SELECT * FROM trens WHERE status_operacional IN ('
                 <div class="widget-icon-frame">
                   <img src="imagens/foto_perfil.webp" alt="Foto de Perfil" />
                 </div>
-                <h3 class="widget-title">Perfil do Operador</h3>
+                <h3 class="widget-title">Perfil</h3>
                 <span class="widget-badge">
-                  <i class="bi bi-shield-check"></i> Administrador Ativo
+                  <i class="bi bi-shield-check"></i> Clique para ver seu perfil
                 </span>
               </div>
             </a>
