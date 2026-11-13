@@ -1,12 +1,34 @@
- <?php
-  require 'config.php';
-  require 'proteger.php';
+<?php
+require 'config.php';
+require 'proteger.php';
 
-   if (session_status() !== PHP_SESSION_ACTIVE) {
-    session_start();
- };
+if (session_status() !== PHP_SESSION_ACTIVE) {
+  session_start();
+}
 
- $cargo = $_SESSION['usuario_cargo'];
+$cargo = $_SESSION['usuario_cargo'];
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['excluir_id']) && $cargo != 'cliente') {
+  $id = (int) $_POST['excluir_id'];
+
+  $stmt = $conexao->prepare('DELETE FROM trens WHERE id = ?');
+  $stmt->bind_param('i', $id);
+
+  if ($stmt->execute()) {
+    $_SESSION['mensagem'] = 'Trem excluído com sucesso.';
+  } else {
+    $_SESSION['mensagem'] = 'Erro ao excluir o trem.';
+  }
+
+  $stmt->close();
+  header('Location: dashboard.php');
+  exit;
+}
+
+$mensagem = $_SESSION['mensagem'] ?? '';
+unset($_SESSION['mensagem']);
+
+$resultado = $conexao->query("SELECT * FROM trens WHERE status_operacional IN ('manutencao', 'parado') ORDER BY prefixo");
 ?>
 
 <!DOCTYPE html>
@@ -20,6 +42,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
   <link rel="stylesheet" href="estilo/dashboard.css" />
+  <link rel="stylesheet" href="estilo/trens.css" />
 </head>
 
 <body>
@@ -98,74 +121,99 @@
 
       <!-- SEÇÃO 1: TABELA DE STATUS DOS TRENS -->
       <section class="dashboard-section">
-        <div class="card card-bg-blur dashboard-card">
-          <div class="card-header-custom">
-            <h2 class="card-title">Status dos Trens</h2>
-            <p class="card-subtitle">
-              <i class="bi bi-info-circle"></i> Monitoramento operacional em tempo real
-            </p>
+                   <div class="card card-bg-blur trens-card">
+        <div class="card-header-custom">
+          <h1 class="card-title">Frota de Trens</h1>
+          <p class="card-subtitle">
+            <i class="bi bi-cursor"></i> Clique em uma composição para ver na página de trens
+          </p>
+        </div>
+
+        <?php
+        if ($mensagem !== ''):
+        ?>
+
+          <p class="aviso"><?= htmlspecialchars($mensagem) ?></p>
+
+        <?php
+        endif;
+        ?>
+
+        <?php
+        if ($resultado->num_rows === 0):
+        ?>
+
+          <div class="empty-fleet-state">
+            <i class="bi bi-train-front empty-icon"></i>
+            <p class="empty-text">Nenhum trem em manutenção ou parado no momento.</p>
           </div>
 
+        <?php
+        else:
+        ?>
           <div class="table-responsive">
-            <table class="table text-center">
+            <table class="table text-center mb-0">
               <thead>
                 <tr>
                   <th scope="col">Linha</th>
-                  <th scope="col">Destino</th>
-                  <th scope="col">Tipo</th>
+                  <th scope="col">Modelo</th>
+                  <th scope="col">Capacidade (T)</th>
                   <th scope="col">Status</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <th scope="row">130</th>
-                  <td>Norte / Sul</td>
-                  <td>Passageiros</td>
-                  <td>
-                    <span class="status-ativo">
-                      <span class="status-dot"></span> Ativo
-                    </span>
-                  </td>
-                </tr>
-                <tr>
-                  <th scope="row">142</th>
-                  <td>Oeste / Leste</td>
-                  <td>Carga</td>
-                  <td>
-                    <span class="status-parado">
-                      <span class="status-dot"></span> Parado
-                    </span>
-                  </td>
-                </tr>
-                <tr>
-                  <th scope="row">174</th>
-                  <td>Leste / Norte</td>
-                  <td>Carga</td>
-                  <td>
-                    <span class="status-atencao">
-                      <span class="status-dot"></span> Manutenção
-                    </span>
-                  </td>
-                </tr>
+
+                <?php
+                while ($linha = $resultado->fetch_assoc()) :
+                ?>
+
+                  <!-- CRIAÇÃO DOS TRENS -->
+                  <tr class="train-row" onclick="window.location.href='trens.php'" style="cursor: pointer;" title="Clique para ver na página de trens">
+                    <td scope="row"><?= htmlspecialchars($linha['prefixo']) ?></td>
+                    <td><?= htmlspecialchars($linha['modelo_composicao']) ?></td>
+                    <td><?= number_format((float) $linha['capacidade_maxima'], 2, ',', '.') ?></td>
+                    <td>
+                      <span class="status-<?= [
+                                            'ativo' => 'ativo',
+                                            'manutencao' => 'atencao',
+                                            'parado' => 'parado'
+                                          ][$linha['status_operacional']] ?? 'desconhecido'; ?>">
+
+                        <span class="status-dot"></span> <?= [
+                                                            'ativo' => 'Ativo',
+                                                            'manutencao' => 'Manutenção',
+                                                            'parado' => 'Parado'
+                                                          ][$linha['status_operacional']] ?? 'desconhecido'; ?>
+                      </span>
+                    </td>
+                  </tr>
+                <?php
+                endwhile;
+                ?>
               </tbody>
             </table>
           </div>
-        </div>
+        <?php
+        endif;
+        ?>
+      </div>
       </section>
 
       <!-- SEÇÃO 2: CARDS DE RESUMO (LOTAÇÃO & PERFIL) -->
       <section class="dashboard-section">
         <div class="row g-3">
           <div class="col-md-6">
-            <div class="card card-bg-blur widget-card">
-              <div class="widget-icon-frame">
-                <img src="imagens/img_lotacao.png" alt="Ícone de Lotação" />
+            <a href="rotas.php" class="text-decoration-none d-block h-100">
+              <div class="card card-bg-blur widget-card">
+                <div class="widget-icon-frame">
+                  <img src="imagens/imagem_rotas.jfif" alt="Ícone de Rotas" />
+                </div>
+                <h3 class="widget-title">Rotas dos trens</h3>
+                <span class="widget-badge">
+                  <i class="bi bi-signpost-split"></i> Clique para ver as rotas
+                </span>
               </div>
-              <h3 class="widget-title">Lotação Geral</h3>
-              <span class="widget-badge">
-                <i class="bi bi-people-fill"></i> 68% Ocupação Média
-              </span>
-            </div>
+            </a>
           </div>
 
           <div class="col-md-6">

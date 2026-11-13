@@ -64,6 +64,7 @@ if (!$resultado) {
   <link rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
+  <link rel="stylesheet" href="estilo/trens.css">
   <link rel="stylesheet" href="estilo/rotas.css?v=1.0">
 </head>
 
