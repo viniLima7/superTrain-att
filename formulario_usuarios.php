@@ -71,6 +71,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validar cargo
     if ($cargo === '') {
         $erros[] = 'Informe o cargo do usuário.';
+    } elseif (!in_array($cargo, ['gestor', 'cliente'], true)) {
+        $erros[] = 'Cargo inválido.';
     }
 
     // Validar e-mail
@@ -417,19 +419,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 Cargo
                             </label>
 
-                            <input
-                                type="text"
-                                class="form-control"
+                            <select
+                                class="form-select"
                                 id="cargo"
                                 name="cargo"
-                                maxlength="50"
-                                placeholder="Ex.: cliente"
-                                value="<?= htmlspecialchars(
-                                    $cargo,
-                                    ENT_QUOTES,
-                                    'UTF-8'
-                                ) ?>"
                                 required>
+
+                                <option value="" disabled <?= $cargo === '' ? 'selected' : '' ?>>
+                                    Selecione o cargo
+                                </option>
+
+                                <option
+                                    value="gestor"
+                                    <?= $cargo === 'gestor' ? 'selected' : '' ?>>
+                                    Gestor
+                                </option>
+
+                                <option
+                                    value="cliente"
+                                    <?= $cargo === 'cliente' ? 'selected' : '' ?>>
+                                    Cliente
+                                </option>
+
+                            </select>
 
                         </div>
 

@@ -63,7 +63,7 @@ CREATE TABLE `usuarios` (
     `email` VARCHAR(150) NOT NULL UNIQUE,
     `nome_usuario` VARCHAR(50) NOT NULL UNIQUE,
     `senha_hash` VARCHAR(255) NOT NULL,
-    `cargo` enum('gestor','operador', 'cliente') DEFAULT 'cliente',
+    `cargo` enum('gestor', 'cliente') DEFAULT 'cliente',
     `pais_id` INT NOT NULL,
     `status_conta` ENUM('ativo', 'inativo', 'bloqueado', 'pendente') NOT NULL DEFAULT 'ativo',
     `ultimo_login` DATETIME NULL,
