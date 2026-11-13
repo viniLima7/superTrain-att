@@ -11,7 +11,7 @@
     $email = trim($_POST['emailUsuario'] ?? '');
     $pais = $_POST['paisUsuario'] ?? '';
     $senha = $_POST['senhaUsuario'] ?? '';
-    $confirmacaoSenha = $_POST['confirmacaoSenhaUsuario'];
+    $confirmacaoSenha = $_POST['confirmacaoSenhaUsuario'] ?? '';
 
     if($email === '') {
       $erros[] = 'Informe o email.';
@@ -32,13 +32,16 @@
     
     if($confirmacaoSenha === ''){
       $erros[] = 'Confirme sua senha.';
-    }elseif (mb_strlen($senha) < 8) {
-      $erros[] = 'A senha deve conter no mínimo 8 caracteres.';
+    }elseif (mb_strlen($confirmacaoSenha) < 8) {
+      $erros[] = 'A confirmação de senha deve conter no mínimo 8 caracteres.';
     }elseif ($senha !== $confirmacaoSenha) {
       $erros[] = 'As senhas não coincidem.';
     }
 
     if(count($erros) === 0) {
+      // Corrige eventuais registros que tenham ficado com nome_usuario vazio para evitar erro de duplicidade
+      $conexao->query("UPDATE usuarios SET nome_usuario = CONCAT('usuario_', id) WHERE nome_usuario = ''");
+
       $stmt = $conexao->prepare('SELECT id FROM usuarios WHERE email = ? LIMIT 1');
       $stmt->bind_param('s', $email);
       $stmt->execute();
@@ -50,11 +53,38 @@
       } else {
         $hash = password_hash($senha, PASSWORD_DEFAULT);
 
-        $stmt = $conexao->prepare('INSERT INTO usuarios (`email`, `senha_hash`, `pais_id`, `status_conta`) VALUES (?,?,?,?)');
-        $stmt-> bind_param('ssis', $email, $hash, $paisPadrao, $statusPadrao);
+        // Gera o nome de usuário a partir do prefixo do e-mail
+        $nomeBase = explode('@', $email)[0];
+        $nomeBase = mb_substr($nomeBase, 0, 40);
+        $nomeUsuario = $nomeBase;
+
+        // Se o nome de usuário já existir, adiciona um sufixo numérico
+        $stmtNome = $conexao->prepare('SELECT id FROM usuarios WHERE nome_usuario = ? LIMIT 1');
+        $stmtNome->bind_param('s', $nomeUsuario);
+        $stmtNome->execute();
+        if ($stmtNome->get_result()->fetch_assoc()) {
+          $nomeUsuario = $nomeBase . '_' . rand(100, 999);
+        }
+        $stmtNome->close();
+
+        // Obtém o id do país selecionado (ou usa 1 como padrão)
+        $paisId = (int)$paisPadrao;
+        if (!empty($pais)) {
+          $stmtPais = $conexao->prepare('SELECT id FROM paises WHERE codigo = ? LIMIT 1');
+          $stmtPais->bind_param('s', $pais);
+          $stmtPais->execute();
+          $paisEncontrado = $stmtPais->get_result()->fetch_assoc();
+          if ($paisEncontrado) {
+            $paisId = (int)$paisEncontrado['id'];
+          }
+          $stmtPais->close();
+        }
+
+        $stmt = $conexao->prepare('INSERT INTO usuarios (`email`, `nome_usuario`, `senha_hash`, `pais_id`, `status_conta`) VALUES (?,?,?,?,?)');
+        $stmt->bind_param('sssis', $email, $nomeUsuario, $hash, $paisId, $statusPadrao);
 
         if($stmt->execute()){
-          $sucesso = 'Usúario cadastrado com sucesso!';
+          $sucesso = 'Usuário cadastrado com sucesso!';
           $email = '';
         } else {
           $erros[] = 'Não foi possível cadastrar o usuário.';
