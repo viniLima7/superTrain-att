@@ -224,10 +224,16 @@ $resultado = $conexao->query('SELECT * FROM trens ORDER BY prefixo');
                               <div class="detail-label justify-content-center">
                                 <i class="bi bi-speedometer2"></i> Velocidade Atual
                               </div>
-                              <div class="speed-number">1</div>
+                              <?php if($linha['status_operacional'] == 'ativo') {
+                                $velocidade  = rand(0, 9000) / 100;
+                              }else {
+                                $velocidade  = 0;
+                              } ?>
+                              <div class="speed-number"><?= $velocidade ?></div>
                               <div class="speed-unit">KM / H</div>
                             </div>
 
+                            <?php if($cargo != 'cliente'): ?>
                             <div class="train-actions">
                               <a class="btn btn-sm btn-outline-secondary" title="Editar informações do trem" href="formulario.php?id=<?= (int) $linha['id'] ?>">
                                 <i class="bi bi-pencil"></i> Editar
@@ -245,6 +251,7 @@ $resultado = $conexao->query('SELECT * FROM trens ORDER BY prefixo');
 
 
                             </div>
+                            <?php endif; ?>
                           </div>
                         </div>
                       </div>
