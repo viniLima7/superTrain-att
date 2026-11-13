@@ -245,7 +245,7 @@ $preferencia = function (string $campo) use ($perfil): string {
         <div class="collapse navbar-collapse" id="navbarSuperTrain">
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="dashboard.php">
+              <a class="nav-link" aria-current="page" href="dashboard.php">
                 <i class="bi bi-grid-fill"></i> Dashboard
               </a>
             </li>
@@ -284,7 +284,7 @@ $preferencia = function (string $campo) use ($perfil): string {
               </li>
               <?php endif; ?>
             <li class="nav-item">
-              <a class="nav-link" href="perfil.php">
+              <a class="nav-link active" href="perfil.php">
                 <i class="bi bi-person-circle"></i> Perfil
               </a>
             </li>
@@ -509,7 +509,7 @@ $preferencia = function (string $campo) use ($perfil): string {
               </div>
             </div>
 
-            <!-- CARD DE PREFERÊNCIAS DO SISTEMA -->
+            
             <div class="card card-bg-blur perfil-card mt-4">
               <h2 class="card-section-title">
                 <i class="bi bi-sliders"></i> Preferências do Sistema & Alertas CCO
