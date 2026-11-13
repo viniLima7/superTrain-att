@@ -1,6 +1,6 @@
 # SuperTrain
 
-![alt text](imagens/banner-readme.png)
+![Banner da logo](imagens/banner-readme.png)
 
 Sistema web para gerenciamento e acompanhamento de operações ferroviárias. O SuperTrain reúne informações sobre trens, rotas, sensores, usuários e indicadores operacionais em uma única plataforma, com o objetivo de facilitar a consulta e a organização das informações da malha ferroviária.
 
